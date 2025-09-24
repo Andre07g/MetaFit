@@ -13,8 +13,8 @@ export default class ContratosRepositorio{
         return await this.coleccion.find().toArray();
     }
 
-    async eliminar(contrato){
-        return await this.coleccion.deleteOne({_id:new ObjectId(contrato._id)});
+    async finalizar(contrato){
+        return await this.coleccion.updateOne({_id:new ObjectId(contrato._id)},{$set:{fechaFinalizacion:new Date()}});
     }
 
 }
