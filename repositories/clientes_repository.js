@@ -17,7 +17,7 @@ export default class ClientesRepositorio {
         return await this.coleccion.findOne({ _id: new ObjectId(id) });
     }
 
-    async actualizarCliente(id, data) {
+    async actualizarCliente(id, ) {
         return await this.coleccion.updateOne(
             { _id: new ObjectId(id) },
             { $set: data }
@@ -27,5 +27,14 @@ export default class ClientesRepositorio {
     async eliminarCliente(id) {
         return await this.coleccion.deleteOne({ _id: new ObjectId(id) });
     }
+
+    async asignarPlan (cliente,plan){
+        return await this.coleccion.updateOne({_id:new ObjectId(cliente._id)},{$push:{planes:new ObjectId(plan._id)}})
+    }
+
+    async eliminarPlan(clienteId,planId){
+        return await this.coleccion.updateOne({_id:new ObjectId(clienteId)},{$pull:{planes:new ObjectId(planId)}})
+    }
+
 }
 
