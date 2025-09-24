@@ -6,7 +6,7 @@ export default class NutricionRepositorio{
     }
 
     async crear(planNutricional){
-        return await this.coleccion.insertOne(nutricion)
+        return await this.coleccion.insertOne(planNutricional)
     }
 
     async listar(){
@@ -18,7 +18,7 @@ export default class NutricionRepositorio{
     }
 
     async eliminar(planNutricional){
-        return await this.coleccion.deleteOne({_id:new ObjectId(nutricion._id)});
+        return await this.coleccion.deleteOne({_id:new ObjectId(planNutricional._id)});
     }
 
 }
