@@ -1,6 +1,6 @@
 import inquirer from "inquirer";
 import { ObjectId } from "mongodb";
-import NutricionService from "../services/planes_service.js";
+import NutricionService from "../services/nutricion_service.js";
 import  Nutricion from "../models/Nutricion.js";
 
 const nutricionServicio = new NutricionService();
@@ -20,68 +20,63 @@ export async function CrearPlan() {
                     const nombreDesayuno = preguntar("Ingrese el nombre del desayuno");
                     if(nombreDesayuno.length===0){throw new Error("El nombre del desayuno no puede estar vacio");}
                     const caloriasDesayuno = preguntarNum("Ingrese calorias del alimento")
-                    if(caloriasDesayuno.length===0){throw new Error("No puede dejar el campo de calorias vacio");
-                    }
+                    if(caloriasDesayuno.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
+                    const nuevoDesayuno = {comida:nombreDesayuno,calorias:caloriasDesayuno};
+                    desayuno.push(nuevoDesayuno);
+                    console.log("Desayuno añadido exitosamente");
                     break;
-            
-                default:
+                case "Añadir almuerzo":
+                    const nombreAlmuerzo = preguntar("Ingrese el nombre del almuerzo");
+                    if(nombreAlmuerzo.length===0){throw new Error("El nombre del almuerzo no puede estar vacio");}
+                    const caloriasAlmuerzo = preguntarNum("Ingrese calorias del alimento")
+                    if(caloriasAlmuerzo.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
+                    const nuevoAlmuerzo = {comida:nombreAlmuerzo,calorias:caloriasAlmuerzo};
+                    almuerzo.push(nuevoAlmuerzo);
+                    console.log("Almuerzo añadido exitosamente");
                     break;
+                case "Añadir Cena":
+                    const nombreCena = preguntar("Ingrese el nombre del cena");
+                    if(nombreCena.length===0){throw new Error("El nombre del cena no puede estar vacio");}
+                    const caloriasCena = preguntarNum("Ingrese calorias del alimento")
+                    if(caloriasCena.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
+                    const nuevoCena = {comida:nombreCena,calorias:caloriasCena};
+                    cena.push(nuevoCena);
+                    console.log("Cena añadido exitosamente");
+                    break;
+                case "Finalizado":
+                    console.log("Volviendo al menu anterior");
+                    return;
             }
         }
-        if (duracion!= Number) { throw new Error("La duracion debe ser un numero"); };
-        const metaFisica = await opciones("Bajar de peso","Aumentar masa muscular","Mejorar rendimiento","Mejorar fuerza","Mejorar elasticidad");
-        const nivel = await opciones("Principiante","Intermedio","Avanzado");
-        const precio = await preguntarNum("Ingrese el precio");
-        if (precio!= Number) { throw new Error("El precio debe ser un numero"); };
-        const planNuevo = new Plan(nombre, duracion, metaFisica, nivel, precio);
-        await planesServicio.crearPlan(planNuevo);
+        const { clienteSeleccionado } = await inquirer.prompt([
+            {
+                type: "list",
+                name: "clienteSeleccionado",
+                message: "Seleccione el cliente:",
+                choices: listaClientes.map(c => ({ name: `${c.nombre} (Documento: ${c.documento})`, value: c }))
+            }
+        ]);
+        const nuevoPlanNutricional = new Nutricion(nombre,desayuno,almuerzo,cena,clienteSeleccionado._id);
+        await nutricionServicio.crearPlanNutricional(nuevoPlanNutricional);
         console.log("Plan registrado correctamente");
     } catch (error) {
         console.log("Error al crear plan:", error)
     }
 }
 
-export async function EditarPlan() {
-    try {
-        console.log("Edición de plan");
-        const listaPlanes = await planesServicio.listarPlanes();
-        if (listaPlanes.length === 0) {
-            console.log("No hay  planes para editar");
-            return;
-        }
-        const { planSeleccionado } = await inquirer.prompt([
-            {
-                type: "list",
-                name: "planSeleccionado",
-                message: "Seleccione el plan:",
-                choices: listaPlanes.map(p => ({ name: `${p.nombre} (Duracion: ${p.duracion}) (Precio: ${p.precio})`, value: p}))
-            }
-        ]);
-        planSeleccionado.precio = await preguntarNum("Ingrese el nuevo precio:");
-        if (planSeleccionado.precio!= Number) { throw new Error("El precio debe ser un numero"); };
-
-        await planesServicio.editarPlan(planSeleccionado._id,planSeleccionado);
-        console.log("Plan actualizado correctamente");
-    } catch (error) {
-        console.log("Error al editar plan:", error);
-
-    }
-}
 
 export async function  ListarPlanes() {
     try {
-        const planesLista = await planesServicio.listarPlanes();
-        if (planesLista.length === 0) {
+        const planesNutLista = await nutricionServicio.listarPlanesNutricionales();
+        if (planesNutLista.length === 0) {
             console.log("No hay planes");
             return;
         }
         console.log("===================================")
-        planesLista.forEach(p => {
+        planesNutLista.forEach(p => {
             console.log("-----------------------------------");
             console.log(`Nombre: ${p.nombre}`);
-            console.log(`Documento: ${p.duracion}`);
-            console.log(`Telefono: ${p.metaFisica}`)
-            console.log(`Planes: ${p.precio}`);
+            console.log(`Documento: ${p.clienteId}`);
         });
         console.log("===================================")
     } catch (error) {
@@ -92,7 +87,7 @@ export async function  ListarPlanes() {
 export async function Eliminarplan(){
     try {
         console.log("Eliminar plan");
-        const listaplanesEliminar = await planesServicio.listarplanes();
+        const listaplanesEliminar = await nutricionServicio.listarPlanesNutricionales();
         if (listaplanesEliminar.length === 0) {
             console.log("No hay planes");
             return;
@@ -102,10 +97,10 @@ export async function Eliminarplan(){
                 type: "list",
                 name: "planSeleccionadoEliminar",
                 message: "Seleccione el plan:",
-                choices: listaPlanes.map(p => ({ name: `${p.nombre} (Duracion: ${p.duracion}) (Precio: ${p.precio})`, value: p}))
+                choices: listaplanesEliminar.map(p => ({ name: `${p.nombre}`, value: p}))
             }
         ]);
-        await planesServicio.eliminarPlan(planSeleccionadoEliminar);
+        await nutricionServicio.eliminarPlan(planSeleccionadoEliminar);
         console.log("Plan eliminado correctamente");
     } catch (error) {
         console.log("Error al eliminar plan",error)
