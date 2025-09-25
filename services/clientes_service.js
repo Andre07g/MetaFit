@@ -8,14 +8,14 @@ export default class ClientesService {
     async agregarCliente(clienteObj){
         if (!clienteObj.nombre || !clienteObj.telefono || !clienteObj.documento){
             throw new Error("El cliente debe tener nombre, telefono y documento");}
-        return await this.repositorio.crear(ClienteObj);
+        return await this.repositorio.crear(clienteObj);
     }
      
     async editarCliente(id,clienteObj){
         if(!clienteObj.nombre || !clienteObj.telefono || !clienteObj.documento){
             throw new Error("El cliente debe tener nombre, telefono y documento");
         }
-        return await this.repositorio.actualizarCliente(id,clienteEditado);
+        return await this.repositorio.actualizarCliente(id,clienteObj);
     }
 
     async listarClientes(){
