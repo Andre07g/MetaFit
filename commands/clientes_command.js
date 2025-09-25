@@ -104,7 +104,7 @@ export async function EliminarCliente() {
                 type: "list",
                 name: "clienteSeleccionadoEliminar",
                 message: "Seleccione el cliente:",
-                choices: listaClientes.map(c => ({ name: `${c.nombre} (Documento: ${c.documento})`, value: c }))
+                choices: listaClientesEliminar.map(c => ({ name: `${c.nombre} (Documento: ${c.documento})`, value: c }))
             }
         ]);
         await clienteServicio.eliminarCliente(clienteSeleccionadoEliminar);
