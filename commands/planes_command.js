@@ -85,7 +85,7 @@ export async function Eliminarplan(){
                 type: "list",
                 name: "planSeleccionadoEliminar",
                 message: "Seleccione el plan:",
-                choices: listaPlanes.map(p => ({ name: `${p.nombre} (Duracion: ${p.duracion}) (Precio: ${p.precio})`, value: p}))
+                choices: listaplanesEliminar.map(p => ({ name: `${p.nombre} (Duracion: ${p.duracion}) (Precio: ${p.precio})`, value: p}))
             }
         ]);
         await planesServicio.eliminarPlan(planSeleccionadoEliminar);
