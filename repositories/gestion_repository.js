@@ -17,5 +17,12 @@ export default class GestionFinancieraRepositorio{
         return await this.coleccion.deleteOne({_id:new ObjectId(movimiento._id)});
     }
 
+    async listarPorTipo(tipo){
+        return await this.coleccion.find({tipo:tipo})
+    }
+
+    async listarPorCliente (id){
+        return await this.coleccion.find({clienteID: new ObjectId(id)})
+    }
 }
 

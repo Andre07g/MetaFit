@@ -37,5 +37,9 @@ export default class ClientesRepositorio {
         return await this.coleccion.updateOne({_id:new ObjectId(clienteId)},{$pull:{planes:new ObjectId(planId)}})
     }
 
+    async buscarPorId(Id){
+        return await this.collection.findOne({_id: new ObjectId(Id)})
+    }
+
 }
 
