@@ -21,8 +21,8 @@ export default class ClientesService {
         return await this.repositorio.listarTodos();
     }
 
-    async listarPorId(id){
-        return await this.repositorio.buscarPorId(id);
+    async listarPorDocumento(documento){
+        return await this.repositorio.buscarPorDocumento(documento);
     }
 
     async eliminarCliente(clienteObj){

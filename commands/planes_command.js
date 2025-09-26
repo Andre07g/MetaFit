@@ -4,7 +4,12 @@ import PlanesService from "../services/planes_service.js";
 import Planes from "../models/Planes.js";
 import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
 
-const planesServicio = new PlanesService();
+
+let planesServicio;
+
+export function setBase(base) {
+  planesServicio = new PlanesService(base);
+}
 
 export async function CrearPlan() {
     try {
@@ -12,11 +17,11 @@ export async function CrearPlan() {
         const nombre = await preguntar("Ingrese nombre del plan:");
         if (nombre.length === 0) { throw new Error("El nombre no puede estar vacio"); };
         const duracion = await preguntarNum("Ingrese la duracion(dias):");
-        if (duracion!= Number) { throw new Error("La duracion debe ser un numero"); };
+        if (isNaN(duracion)) { throw new Error("La duracion debe ser un numero"); };
         const metaFisica = await opciones("Bajar de peso","Aumentar masa muscular","Mejorar rendimiento","Mejorar fuerza","Mejorar elasticidad");
         const nivel = await opciones("Principiante","Intermedio","Avanzado");
         const precio = await preguntarNum("Ingrese el precio");
-        if (precio!= Number) { throw new Error("El precio debe ser un numero"); };
+        if (isNaN(precio)) { throw new Error("El precio debe ser un numero"); };
         const planNuevo = new Planes(nombre, duracion, metaFisica, nivel, precio);
         await planesServicio.crearPlan(planNuevo);
         console.log("Plan registrado correctamente");
@@ -42,7 +47,7 @@ export async function EditarPlan() {
             }
         ]);
         planSeleccionado.precio = await preguntarNum("Ingrese el nuevo precio:");
-        if (planSeleccionado.precio!= Number) { throw new Error("El precio debe ser un numero"); };
+        if (isNaN(planSeleccionado.precio)) { throw new Error("El precio debe ser un numero"); };
 
         await planesServicio.editarPlan(planSeleccionado._id,planSeleccionado);
         console.log("Plan actualizado correctamente");
@@ -52,7 +57,7 @@ export async function EditarPlan() {
     }
 }
 
-export async function  ListarPlanes() {
+export async function ListarPlanes() {
     try {
         const planesLista = await planesServicio.listarPlanes();
         if (planesLista.length === 0) {
@@ -63,9 +68,9 @@ export async function  ListarPlanes() {
         planesLista.forEach(p => {
             console.log("-----------------------------------");
             console.log(`Nombre: ${p.nombre}`);
-            console.log(`Documento: ${p.duracion}`);
-            console.log(`Telefono: ${p.metaFisica}`)
-            console.log(`Planes: ${p.precio}`);
+            console.log(`Duracion: ${p.duracion}`);
+            console.log(`Meta: ${p.metaFisica}`)
+            console.log(`Precio: ${p.precio}`);
         });
         console.log("===================================")
     } catch (error) {
@@ -76,7 +81,7 @@ export async function  ListarPlanes() {
 export async function Eliminarplan(){
     try {
         console.log("Eliminar plan");
-        const listaplanesEliminar = await planesServicio.listarplanes();
+        const listaplanesEliminar = await planesServicio.listarPlanes();
         if (listaplanesEliminar.length === 0) {
             console.log("No hay planes");
             return;

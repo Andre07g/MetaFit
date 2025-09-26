@@ -36,24 +36,34 @@
         validator: {
             $jsonSchema: {
                 bsonType: "object",
-                required: ["nombre", "duracion", "meta_fisica", "nivel"],
+                required: ["nombre", "duracion", "metaFisica", "nivel","precio"],
                 properties: {
                     nombre: {
                         bsonType: "string",
                         description: "Nombre del plan",
                         minLength: 3
                     },
-                    meta_fisica: {
+                    duracion:{
+                        bsonType:"int",
+                        description:"Duración del plan en dias",
+                        minimum:5
+                    },
+                    metaFisica: {
                         bsonType: "string",
                         description: "Objetivo final a alcanzar con el plan de entrenamiento",
                         enum:["Bajar de peso","Aumentar masa muscular","Mejorar rendimiento","Mejorar fuerza","Mejorar elasticidad"]
                         
                     }, 
+                    
                     nivel: {
                         bsonType: "string",
                         description: "Nivel de dificultad o esfuerzo del plan",
                         enum:["Principiante","Intermedio","Avanzado"]
                         
+                    },precio:{
+                        bsonType:"int",
+                        description:"Precio",
+                        minimum:0
                     }
 
                 }
@@ -65,14 +75,14 @@
         validator: {
             $jsonSchema: {
                 bsonType: "object",
-                required: ["clienteId","peso_actual","porcentaje_de_grasa","medidas","comentarios"],
+                required: ["clienteId","pesoActual","porcentajeDeGrasa","medidas","comentarios","fecha"],
                 properties: {
-                    clienteID: {
+                    clienteId: {
                         bsonType: "objectId",
                         description: "Referencia al cliente mediante su id unico",
                     },
                     peso_actual: {
-                        bsonType: "double",
+                        bsonType: "int",
                         description: "Peso actual del cliente",
                     },
                     porcentaje_de_grasa: {
@@ -94,7 +104,7 @@
                                     description: "Parte del cuerpo medida"
                                 },
                                 valor: {
-                                    bsonType: "double",
+                                    bsonType: "int",
                                     minimum: 0,
                                     description: "Valor numérico de la medida"
                                 }
@@ -106,6 +116,10 @@
                         bsonType: "string",
                         description: "Comentarios del avance, maximo 300 caracteres",
                         maxLength:300
+                    },
+                    fecha:{
+                        bsonType:"date",
+                        description:"Fecha de el seguimiento"
                     }
 
                 }
@@ -117,7 +131,7 @@
         validator: {
             $jsonSchema: {
                 bsonType: "object",
-                required: ["nombre","desayuno","almuerzo","cena","planId"],
+                required: ["nombre","desayuno","almuerzo","cena","clienteId"],
                 properties: {
                     nombre:{bsonType:"string",description:"Nombre del plan de nutricion",minLength:5},
                     desayuno: {
@@ -127,12 +141,12 @@
                             bsonType: "object",
                             required: ["nombre", "calorias"],
                             properties: {
-                                parte: {
+                                nombre: {
                                     bsonType: "string",
                                     description: "Nombre del alimento"
                                 },
-                                valor: {
-                                    bsonType: "double",
+                                calorias: {
+                                    bsonType: "int",
                                     minimum: 0,
                                     description: "Calorias aproximadas por comida"
                                 }
@@ -147,12 +161,12 @@
                             bsonType: "object",
                             required: ["nombre", "calorias"],
                             properties: {
-                                parte: {
+                                nombre: {
                                     bsonType: "string",
                                     description: "Nombre del alimento"
                                 },
-                                valor: {
-                                    bsonType: "double",
+                                calorias: {
+                                    bsonType: "int",
                                     minimum: 0,
                                     description: "Calorias aproximadas por comida"
                                 }
@@ -160,19 +174,19 @@
                             additionalProperties: false
                         }
                     }, 
-                    cema: {
+                    cena: {
                         bsonType: "array",
                         description: "Cenas recomendados al cliente",
                         items: {
                             bsonType: "object",
                             required: ["nombre", "calorias"],
                             properties: {
-                                parte: {
+                                nombre: {
                                     bsonType: "string",
                                     description: "Nombre del alimento"
                                 },
-                                valor: {
-                                    bsonType: "double",
+                                calorias: {
+                                    bsonType: "int",
                                     minimum: 0,
                                     description: "Calorias aproximadas por comida"
                                 }

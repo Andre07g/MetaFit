@@ -1,8 +1,8 @@
-import * as ClientesCommand from '../commands/clientes_command.js';
+ import * as ClientesCommand from '../commands/clientes_command.js';
 // import * as ContratosCommand from '../commands/contratos_command.js';
 // import * as NutricionCommand from '../commands/nutricion_command.js';
-// import * as PlanesCommand from '../commands/planes_command.js';
-// import * as SeguimientoCommand from `../commands/seguimiento_command.js`;
+//  import * as PlanesCommand from '../commands/planes_command.js';
+import * as SeguimientoCommand from '../commands/seguimiento_command.js';
 import {preguntar, preguntarNum, opciones,sleep } from '../utils/utilidades.js';
 import {MongoClient} from 'mongodb'
 let salir = false;
@@ -211,11 +211,42 @@ export async function cerrarConexion() {
 const uri = "mongodb+srv://edgar:1852467@cluster0.nw7rq1m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 try {
   await conectar(uri);
+  const cliente = obtenerCliente();
   const base = obtenerBase();
- ClientesCommand.setBase(base);
 
-//   await ClientesCommand.CrearCliente();
- await ClientesCommand.EditarCliente();
+//Clientes
+
+// ClientesCommand.setBase(base);
+// await ClientesCommand.CrearCliente();
+//  await ClientesCommand.EditarCliente();
+//  await ClientesCommand.ListarClientePorDocumento()
+//  await ClientesCommand.EliminarCliente()
+
+//Planes
+
+// PlanesCommand.setBase(base);
+// await PlanesCommand.CrearPlan()
+// await PlanesCommand.EditarPlan();
+// await PlanesCommand.ListarPlanes();
+// await PlanesCommand.Eliminarplan()
+
+// Nutricion
+
+// NutricionCommand.setBase(base);
+// await NutricionCommand.CrearPlan();
+// await NutricionCommand.ListarPlanes();
+// await NutricionCommand.Eliminarplan();
+
+// Seguimiento
+
+// SeguimientoCommand.setBase(base,cliente)
+// await SeguimientoCommand.CrearSeguimiento(cliente);
+// await SeguimientoCommand.EliminarSeguimiento(cliente)
+// await SeguimientoCommand.ListarSeguimientos(cliente)
+
+
+
+
 } catch (error) {
   console.error("Error en la aplicación:", error);
 } finally {

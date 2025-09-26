@@ -46,11 +46,11 @@ export async function EditarCliente() {
             }
         ]);
         clienteSeleccionado.nombre = await preguntar("Ingrese nuevo nombre:");
-        if (nombre.length === 0) { throw new Error("El nombre no puede estar vacio"); };
+        if (clienteSeleccionado.nombre.length === 0) { throw new Error("El nombre no puede estar vacio"); };
         clienteSeleccionado.documento = await preguntar("Ingrese el nuevo documento:");
-        if (documento.length === 0) { throw new Error("El documento debe tener 10 digitos"); };
+        if (clienteSeleccionado.documento.length === 0) { throw new Error("El documento debe tener 10 digitos"); };
         clienteSeleccionado.telefono = await preguntar("Ingrese el nuevo telefono:");
-        if (telefono.length === 0) { throw new Error("El telefono debe tener 10 digitos (+57XXXXXXXXXX)"); };
+        if (clienteSeleccionado.telefono.length === 0) { throw new Error("El telefono debe tener 10 digitos (+57XXXXXXXXXX)"); };
 
         await clienteServicio.editarCliente(clienteSeleccionado._id, clienteSeleccionado);
         console.log("Cliente actualizado correctamente");
@@ -94,7 +94,7 @@ export async function ListarClientePorDocumento() {
         console.log("===================================");
 
     } catch (error) {
-        console.log("Error al buscar cliente", error)
+        console.log("Error al buscar cliente",error.message)
     }
 }
 
