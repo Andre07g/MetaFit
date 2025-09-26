@@ -11,7 +11,6 @@ export default class Planes {
         this.precio = precio
     }
 
-    //------------METODOS GETTERS-------------
 
     getNombre(){
         return this.#nombre
@@ -24,8 +23,6 @@ export default class Planes {
     getPrecio(){
         return this.#precio
     }
-
-    //------------METODOS SETTERS-------------
 
     setPrecio(){
         return this.#precio

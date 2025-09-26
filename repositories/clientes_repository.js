@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
 
+
 export default class ClientesRepositorio {
     constructor(base) {
         this.coleccion = base.collection("clientes");
@@ -13,11 +14,11 @@ export default class ClientesRepositorio {
         return await this.coleccion.find().toArray();
     }
 
-    async buscarPorId(id) {
-        return await this.coleccion.findOne({ _id: new ObjectId(id) });
+    async buscarPorDocumento(documento) {
+        return await this.coleccion.findOne({ documento: documento });
     }
 
-    async actualizarCliente(id, ) {
+    async actualizarCliente(id,data) {
         return await this.coleccion.updateOne(
             { _id: new ObjectId(id) },
             { $set: data }

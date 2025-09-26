@@ -1,13 +1,12 @@
 import ClientesRepositorio from "../repositories/clientes_repository.js";
 
 export default class ClientesService {
-    constructor(base, cliente) {
-        this.repositorio = new ClientesRepositorio(base, cliente);
+    constructor(base) {
+        this.repositorio = new ClientesRepositorio(base);
     }
 
     async agregarCliente(clienteObj){
-        if (!clienteObj.nombre || !clienteObj.telefono || !clienteObj.documento){
-            throw new Error("El cliente debe tener nombre, telefono y documento");}
+        
         return await this.repositorio.crear(clienteObj);
     }
      

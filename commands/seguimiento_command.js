@@ -3,6 +3,7 @@ import SeguimientoService from "../services/seguimiento_service.js";
 import Seguimiento from "../models/Planes.js";
 import ClientesService from "../services/clientes_service.js";
 import { ObjectId } from "mongodb";
+import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
 
 const seguimientoServicio = new SeguimientoService();
 const clienteServicio = new ClientesService();

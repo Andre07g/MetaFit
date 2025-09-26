@@ -1,8 +1,8 @@
 import NutricionRepositorio from "../repositories/nutricion.repository.js";
 
 export default class NutricionService{
-    constructor(base,cliente){
-        this.repositorio=new NutricionRepositorio(base, cliente);
+    constructor(base){
+        this.repositorio=new NutricionRepositorio(base);
     }
 
     async crearPlanNutricional(planNutricionalObj){

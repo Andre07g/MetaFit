@@ -2,6 +2,7 @@ import inquirer from "inquirer";
 import { ObjectId } from "mongodb";
 import PlanesService from "../services/planes_service.js";
 import Planes from "../models/Planes.js";
+import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
 
 const planesServicio = new PlanesService();
 
@@ -16,7 +17,7 @@ export async function CrearPlan() {
         const nivel = await opciones("Principiante","Intermedio","Avanzado");
         const precio = await preguntarNum("Ingrese el precio");
         if (precio!= Number) { throw new Error("El precio debe ser un numero"); };
-        const planNuevo = new Plan(nombre, duracion, metaFisica, nivel, precio);
+        const planNuevo = new Planes(nombre, duracion, metaFisica, nivel, precio);
         await planesServicio.crearPlan(planNuevo);
         console.log("Plan registrado correctamente");
     } catch (error) {

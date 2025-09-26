@@ -3,6 +3,7 @@ import ContratoService from "../services/contratos_service.js";
 import ClientesService from "../services/clientes_service.js";
 import PlanesService from "../services/planes_service.js"
 import Contrato from "../models/Contrato.js";
+import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
 
 
 const contratoServicio = new ContratoService();

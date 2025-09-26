@@ -1,55 +1,45 @@
-const { default: Choice } = require("inquirer/lib/objects/choice");
-const { default: Choices } = require("inquirer/lib/objects/choices");
-
-
+import * as ClientesCommand from '../commands/clientes_command.js';
+// import * as ContratosCommand from '../commands/contratos_command.js';
+// import * as NutricionCommand from '../commands/nutricion_command.js';
+// import * as PlanesCommand from '../commands/planes_command.js';
+// import * as SeguimientoCommand from `../commands/seguimiento_command.js`;
+import {preguntar, preguntarNum, opciones,sleep } from '../utils/utilidades.js';
+import {MongoClient} from 'mongodb'
 let salir = false;
 console.log('Bienvenido');
 
+async function main(){
 while (!salir){
-    const { opcion } = await preguntarOpcion([
-        {
-            type: "list",
-            name: "opcion",
-            message: "Seleccione una opción",
-            choices: [
-                {name: "Clientes", value: "1"},
-                {name: "Planes de Entrenamiento", value: "2"},
-                {name: "Seguimiento", value: "3"},
-                {name: "Contratos", value: "4"},
-                {name: "Gestión Financiera", value: "5"},
-                {name: "Salir", value: "6"}
-            ]
-        }
-    ]);
+    const { opcion } = await opciones("Clientes","Planes de Entrenamiento","Seguimiento","Contratos","Contratos","Gestión Financiera","Salir")
 
     switch (opcion) {
-        case "1":
+        case "Clientes":
             await subMenuClientes();
             console.log("submenuclientes")
             break;
-        case "2":
+        case "Planes de Entrenamiento":
             await subMenuPlanes();
             console.log("submenuplanes")
             break
-        case "3":
+        case "Seguimiento":
             await subMenuSeguimiento();
             console.log("submenuseguimiento")
             break
-        case "4":
+        case "Contratos":
             await subMenuContratos();
             console.log("submenu contratos")
             break
-        case "5":
+        case "Gestión Financiera":
             await subMenuGestion();
             break
-        case "6":
+        case "Salir":
             salir = true;
             console.log("Saliendo...")
             break
         default:
             break;
     }
-}
+}}
 
 //-------------------submenús--------------------------
 
@@ -58,46 +48,26 @@ while (!salir){
 //                       CLIENTES
 //===================================================
 async function subMenuClientes() {
-    const { opcionCliente } = await preguntarOpcion([
-        {
-            type: "list",
-            name:"opcionCliente",
-            message:"Selecciona una opción: ",
-            choices: [
-                {name: "Crear cliente", value: "1"},
-                {name: "Editar cliente", value: "2"},
-                {name: "Eliminar cliente", value: "3"},
-                {name: "Buscar cliente", value: "4"},
-                {name: "Listar cliente", value: "5"},
-                {name: "Añadir plan", value: "5"},
-                {name: "Regresar al menú anterior", value: "6"}
-            ]
-        }
-    ]);
+    const { opcionCliente } = await opciones("Crear cliente","Editar cliente","Eliminar cliente","Buscar cliente","Listar clientes","Regresar al menú anterior")
 
     switch (opcionCliente) {
-        case "1":
-            console.log("agregar cliente")
+        case "Crear cliente":
+            await ClientesCommand.CrearCliente();
             break;
-        case "2":
-            console.log("editar cliente")
+        case "Editar cliente":
+            await ClientesCommand.EditarCliente();
             break;
-        case "3":
+        case "Eliminar cliente":
             console.log("eliminar cliente")
             break;
-        case "4":
+        case "Buscar cliente":
             console.log("buscar cliente")
             break;
-        case "5":
+        case "Listar clientes":
             console.log("listar cliente")
             break;
-        case "6":
-            console.log("añadir plan")
-            break;
-        case "7":
-            console.log("regresar al menu anterior")
-            break;
-        default:
+        case "Regresar al menú anterior":
+            console.log("saliendo")
             break;
     }
 };
@@ -107,38 +77,23 @@ async function subMenuClientes() {
 //===================================================
 
 async function subMenuPlanes() {
-    const { opcionPlanes } = await preguntarOpcion([
-        {
-            type: "list",
-            name: "opcionPlanes",
-            message: "Seleccione una opción",
-            choices: [
-                {name: "Crear plan de entrenamiento", value: "1"},
-                {name: "Editar un plan de entrenamiento", value: "2"},
-                {name: "Eliminar un plan de entrenamiento", value: "3"},
-                {name: "Listar los planes de entrenamiento", value: "4"},
-                {name: "Regresar al menú anterior", value: "5"},
-            ]
-        }
-    ]);
+    const { opcionPlanes } = await opciones("Crear plan de entrenamiento","Editar un plan de entrenamiento","Eliminar un plan de entrenamiento","Listar los planes de entrenamiento","Regresar al menú anterior")
 
     switch (opcionPlanes) {
-        case "1":
+        case "Crear plan de entrenamiento":
             console.log("crear plan")
             break;
-        case "2":
+        case "Editar un plan de entrenamiento":
             console.log("editar plan")
             break;
-        case "3":
+        case "Eliminar un plan de entrenamiento":
             console.log("eliminar plan")
             break;
-        case "4":
+        case "Listar los planes de entrenamiento":
             console.log("listar planes")
             break;
-        case "5":
+        case "Regresar al menú anterior":
             console.log("regresar al menu anterior")
-            break;
-        default:
             break;
     }
     
@@ -149,34 +104,20 @@ async function subMenuPlanes() {
 //===================================================
 
 async function subMenuSeguimiento() {
-    const { opcionSeguimiento } = await preguntarOpcion([
-        {
-            type: "list",
-            name: "opcionSeguimiento",
-            message: "Selecciona una opción: ",
-            choices: [
-                {name: "Registrar avance", value: "1"},
-                {name: "Eliminar Avance", value: "2"},
-                {name: "Ver avance de un cliente", value: "3"},
-                {name: "Regresar al menú anterior", value: "4"}
-            ]
-        }
-    ]);
+    const { opcionSeguimiento } = await opciones("Registrar avance","Eliminar Avance","Ver avance de un cliente","Regresar al menú anterior")
 
     switch (opcionSeguimiento) {
-        case "1":
+        case "Registrar avance":
             console.log("registri de avance")
             break;
-        case "2":
+        case "Eliminar Avance":
             console.log("eliminar avnace")
             break;
-        case "3":
+        case "Ver avance de un cliente":
             console.log("ver avance cliente")
             break;
-        case "4":
+        case "Regresar al menú anterior":
             console.log("regresar al menu anterior")
-            break;
-        default:
             break;
     }
     
@@ -187,31 +128,19 @@ async function subMenuSeguimiento() {
 //===================================================
 
 async function subMenuContratos() {
-    const { opcionContratos } = await preguntarOpcion([
-        {
-            type: "list",
-            name: "opcionContratos",
-            message: "Seleccione una opción",
-            choices: [
-                {name: "Crear contrato", value: "1"},
-                {name: "Finalizar contrato", value: "2"},
-                {name: "Ver contratos", value: "3"},
-                {name: "Regresar al menú anterior", value: "4"}
-            ]
-        }
-    ]);
+    const { opcionContratos } = await opciones("Crear contrato","Finalizar contrato","Ver contratos","Regresar al menú anterior")
 
     switch (opcionContratos) {
-        case "1":
+        case "Crear contrato":
             console.log("creacion contrato")
             break;
-        case "2":
+        case "Finalizar contrato":
             console.log("finalizar contrato")
             break;
-        case "3":
+        case "Ver contratos":
             console.log("ver contratos")
             break;
-        case "4":
+        case "Regresar al menú anterior":
             console.log("regresar al menu ante")
             break;
     
@@ -225,46 +154,73 @@ async function subMenuContratos() {
 //===================================================
 
 async function subMenuGestion () {
-    const { opcionGestion } = await preguntarOpcion([
-        {
-            type: "list",
-            name: "opcionGestion",
-            message: "Seleccione una opción: ",
-            choices: [
-                {name: "Crear Ingreso", value: "1"},
-                {name: "Crear Egreso", value: "2"},
-                {name: "Ver historial de ingresos", value: "3"},
-                {name: "Ver historial de egresos", value: "4"},
-                {name: "Balance por clientes", value: "5"},
-                {name: "Balance general", value: "6"},
-                {name: "Volver al menu anterior", value: "7"},
-            ]
-        }
-    ]);
+    const { opcionGestion } = await opciones("Crear Ingreso","Crear Egreso","Ver historial de ingresos","Ver historial de egresos","Balance por clientes","Balance general","Volver al menu anterior")
 
     switch (opcionGestion) {
-        case "1":
+        case "Crear Ingreso":
             console.log("creacion de ingreso")
             break;
-        case "2":
+        case "Crear Egreso":
             console.log("creacion de egreso")
             break;
-        case "3":
+        case "Ver historial de ingresos":
             console.log("ver historial ingre")
             break;
-        case "4":
+        case "Ver historial de egresos":
             console.log("ver historial egre")
             break;
-        case "5":
+        case "Balance por clientes":
             console.log("balance clientes")
             break;
-        case "6":
+        case "Balance general":
             console.log("balance general")
             break;
-        case "7":
+        case "Volver al menu anterior":
             console.log("regresal al menu ante")
             break;
         default:
             break;
     }
 };
+
+
+let cliente;
+let base;
+
+
+export async function conectar(uri, nombreBD = "ignasio") {
+  cliente = new MongoClient(uri);
+  await cliente.connect();
+  base = cliente.db(nombreBD);
+  console.log("Conectado a MongoDB");
+}
+
+export function obtenerCliente() {
+  return cliente;
+}
+
+export function obtenerBase() {
+  return base;
+}
+
+export async function cerrarConexion() {
+  await cliente?.close();
+  console.log("Desconectando de MongoDB");
+}
+
+const uri = "mongodb+srv://edgar:1852467@cluster0.nw7rq1m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+try {
+  await conectar(uri);
+  const base = obtenerBase();
+ ClientesCommand.setBase(base);
+
+//   await ClientesCommand.CrearCliente();
+ await ClientesCommand.EditarCliente();
+} catch (error) {
+  console.error("Error en la aplicación:", error);
+} finally {
+  await cerrarConexion();
+  console.log("Conexión a la base de datos cerrada.");
+}
+
+

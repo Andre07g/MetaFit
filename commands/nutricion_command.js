@@ -2,6 +2,7 @@ import inquirer from "inquirer";
 import { ObjectId } from "mongodb";
 import NutricionService from "../services/nutricion_service.js";
 import  Nutricion from "../models/Nutricion.js";
+import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
 
 const nutricionServicio = new NutricionService();
 
@@ -21,7 +22,7 @@ export async function CrearPlan() {
                     if(nombreDesayuno.length===0){throw new Error("El nombre del desayuno no puede estar vacio");}
                     const caloriasDesayuno = preguntarNum("Ingrese calorias del alimento")
                     if(caloriasDesayuno.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
-                    const nuevoDesayuno = {comida:nombreDesayuno,calorias:caloriasDesayuno};
+                    const nuevoDesayuno = {nombre:nombreDesayuno,calorias:caloriasDesayuno};
                     desayuno.push(nuevoDesayuno);
                     console.log("Desayuno añadido exitosamente");
                     break;
@@ -30,7 +31,7 @@ export async function CrearPlan() {
                     if(nombreAlmuerzo.length===0){throw new Error("El nombre del almuerzo no puede estar vacio");}
                     const caloriasAlmuerzo = preguntarNum("Ingrese calorias del alimento")
                     if(caloriasAlmuerzo.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
-                    const nuevoAlmuerzo = {comida:nombreAlmuerzo,calorias:caloriasAlmuerzo};
+                    const nuevoAlmuerzo = {nombre:nombreAlmuerzo,calorias:caloriasAlmuerzo};
                     almuerzo.push(nuevoAlmuerzo);
                     console.log("Almuerzo añadido exitosamente");
                     break;
@@ -39,7 +40,7 @@ export async function CrearPlan() {
                     if(nombreCena.length===0){throw new Error("El nombre del cena no puede estar vacio");}
                     const caloriasCena = preguntarNum("Ingrese calorias del alimento")
                     if(caloriasCena.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
-                    const nuevoCena = {comida:nombreCena,calorias:caloriasCena};
+                    const nuevoCena = {nombre:nombreCena,calorias:caloriasCena};
                     cena.push(nuevoCena);
                     console.log("Cena añadido exitosamente");
                     break;
@@ -56,7 +57,7 @@ export async function CrearPlan() {
                 choices: listaClientes.map(c => ({ name: `${c.nombre} (Documento: ${c.documento})`, value: c }))
             }
         ]);
-        const nuevoPlanNutricional = new Nutricion(nombre,desayuno,almuerzo,cena,clienteSeleccionado._id);
+        const nuevoPlanNutricional = new Nutricion(nombre,desayuno,almuerzo,cena,new ObjectId(clienteSeleccionado._id));
         await nutricionServicio.crearPlanNutricional(nuevoPlanNutricional);
         console.log("Plan registrado correctamente");
     } catch (error) {

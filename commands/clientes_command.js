@@ -1,9 +1,15 @@
 import inquirer from "inquirer";
 import { ObjectId } from "mongodb";
 import ClientesService from "../services/clientes_service.js";
-import Clientes from "../models/Cliente.js";
+import Cliente from "../models/Cliente.js";
+import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
 
-const clienteServicio = new ClientesService();
+
+let clienteServicio;
+
+export function setBase(base) {
+  clienteServicio = new ClientesService(base);
+}
 
 export async function CrearCliente() {
     try {
@@ -14,7 +20,8 @@ export async function CrearCliente() {
         if (documento.length === 0) { throw new Error("El documento debe tener 10 digitos"); };
         const telefono = await preguntar("Ingrese el telefono:");
         if (telefono.length === 0) { throw new Error("El telefono debe tener 10 digitos (+57XXXXXXXXXX)"); };
-        const clienteNuevo = new Cliente(nombre, documento, telefono);
+        const planes = [];
+        const clienteNuevo = new Cliente(nombre, documento, telefono,planes );
         await clienteServicio.agregarCliente(clienteNuevo);
         console.log("Cliente registrado correctamente");
     } catch (error) {

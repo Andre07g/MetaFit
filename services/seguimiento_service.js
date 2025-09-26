@@ -1,8 +1,8 @@
 import SeguimientoRepositorio from "../repositories/seguimiento_repository.js";
 
 export default class SeguimientoService{
-    constructor(base,cliente){
-        this.repositorio=new SeguimientoRepositorio(base, cliente);
+    constructor(base){
+        this.repositorio=new SeguimientoRepositorio(base);
     }
 
     async crearSeguimiento(registroObj){

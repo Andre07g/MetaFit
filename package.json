@@ -1,5 +1,6 @@
 {
   "name": "ignasio-jean",
+  "type":"module",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -13,7 +14,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Andre07g/IGNASIO-JEAN/issues"
   },

@@ -1,5 +1,5 @@
 export default class Contrato{
-    constructor(cliente,plan,duracion,precio,fechaInicio=new Date()) {
+    constructor(cliente,plan,fechaInicio=new Date()) {
     this.clienteNombre=cliente.nombre
     this.clienteID= cliente._id
     this.planNombre=plan.nombre

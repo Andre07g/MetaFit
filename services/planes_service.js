@@ -1,8 +1,8 @@
 import PlanesRepositorio from "../repositories/planes_repository.js";
 
 export default class PlanesService{
-    constructor(base,cliente){
-        this.repositorio=new PlanesRepositorio(base, cliente);
+    constructor(base){
+        this.repositorio=new PlanesRepositorio(base);
     }
 
     async crearPlan(planObj){

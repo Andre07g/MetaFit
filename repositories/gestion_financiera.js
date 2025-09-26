@@ -2,7 +2,7 @@ import {ObjectId} from "mongodb"
 
 export default class GestionFinancieraRepositorio{
     constructor(base){
-        this.coleccion=base.collection("gestion_financiera")
+        this.coleccion=base.collection("movimientos")
     }
 
     async crear(movimiento){

@@ -3,10 +3,10 @@ import ClientesRepositorio from "../repositories/clientes_repository.js";
 import PlanesRepositorio from "../repositories/planes_repository.js";
 
 export default class ContratosService {
-    constructor(base, cliente) {
-        this.repositorio = new ContratosRepositorio(base, cliente);
-        this.clientesRepo = new ClientesRepositorio(base, cliente);
-        this.planesRepo = new PlanesRepositorio(base, cliente);
+    constructor(base) {
+        this.repositorio = new ContratosRepositorio(base);
+        this.clientesRepo = new ClientesRepositorio(base);
+        this.planesRepo = new PlanesRepositorio(base);
     }
 
     async crearContrato(contratoObj, clienteObj, planObj) {
