@@ -4,8 +4,8 @@ export default class Contrato{
     this.clienteID= cliente._id
     this.planNombre=plan.nombre
     this.planID=plan._id
-    this.duracion=duracion
-    this.precio=precio
+    this.duracion=plan.duracion
+    this.precio=plan.precio
     this.fechaInicio=fechaInicio
     this.fechaFinalizacion=null
 }
