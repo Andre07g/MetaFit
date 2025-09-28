@@ -21,5 +21,8 @@ export default class PlanesRepositorio{
         return await this.coleccion.deleteOne({_id:new ObjectId(plan._id)});
     }
 
+    async buscarId(id){
+        return await this.coleccion.findOne({_id:new ObjectId(id)});
+    }
 }
 

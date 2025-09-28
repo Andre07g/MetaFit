@@ -7,31 +7,46 @@ import MovimientoFinanciero from "../models/Gestion_financiera.js"
 import { ListarClientePorDocumento } from "./clientes_command.js";
 import { preguntar, preguntarNum, opciones } from "../utils/utilidades.js";
 
-const gestionServicio = new GestionService();
-const clienteServicio = new ClientesService();
-const planesServicio = new PlanesService();
 
 
-export async function CrearIngreso() {
+let gestionServicio;
+let clienteServicio;
+let planesServicio; 
+
+
+
+export function setBase(base,cliente) {
+  gestionServicio = new GestionService(base);
+ clienteServicio = new ClientesService(base);
+ planesServicio = new PlanesService(base);
+}
+
+
+export async function CrearMovimiento(cliente) {
     try {
         console.log("Creando Ingreso")
         const tipo = await opciones("Ingreso", "Egreso");
         const fecha = new Date();
         switch (tipo) {
             case "Ingreso":
-            const documento = preguntar ("Ingrese el documento")
+            const documento = await preguntar ("Ingrese el documento")
             const clienteEncontrado = await clienteServicio.listarPorDocumento(documento);
             if (!clienteEncontrado){
                 throw new Error ("El cliente no fue encontrado")
+            }
+            if(clienteEncontrado.planes.length === 0){
+                throw new Error("El cliente no tiene planes");
+                
             }
             const { planSeleccionado } = await inquirer.prompt([
                         {
                             type: "list",
                             name: "planSeleccionado",
-                            message: "Seleccione el cliente:",
-                            choices: clienteEncontrado.planes.map(p => ({ name: `${p._id}`, value: p._id }))
+                            message: "Seleccione el plan:",
+                            choices: clienteEncontrado.planes.map(p => ({ name: `${p}`, value: p }))
                         }
                     ]);
+            console.log(planSeleccionado)
             const planEncontrado = await planesServicio.buscarPorId(planSeleccionado);
             const nuevoIngreso = {
                 tipo: tipo,
@@ -48,15 +63,15 @@ export async function CrearIngreso() {
 
                 break;
             case "Egreso":
-                const concepto = preguntar("Ingrese el concepto del egreso");
+                const concepto = await preguntar("Ingrese el concepto del egreso");
                 if (concepto.length === 0){
                     throw new Error ("El concepto no puede estar vacío")
                 };
-                const descripcion = preguntar("Ingrese el concepto del egreso");
+                const descripcion = await preguntar("Ingrese descripcion del egreso");
                 if (descripcion.length === 0){
                     throw new Error ("La descripción no puede estar vacío")
                 };
-                const costo = preguntarNum("Ingrese el valor del egreso")
+                const costo = await preguntarNum("Ingrese el valor del egreso")
                 if (isNaN(costo)){
                     throw new Error ("El egreso debe ser un valor númerico")
                 };
@@ -75,7 +90,7 @@ export async function CrearIngreso() {
                 break;
         }
     } catch (error) {
-
+console.log("Hubo un error",error.message)
     }
 }
 
@@ -85,18 +100,22 @@ export async function ListarPorTipo() {
     console.log("============= Movimentos por Tipo =============")
     if (tipoMovimiento === "Ingreso"){
         movimientosPorTipo.forEach(m => { 
+        console.log("---------------------------------")
         console.log(`${m.fecha}`);
         console.log(`${m.clienteNombre}`);
         console.log(`${m.planNombre}`);
         console.log(`${m.pago}`);
+        console.log("---------------------------------")
     });
     }
     else {
         movimientosPorTipo.forEach(m => { 
+            console.log("---------------------------------")
         console.log(`${m.fecha}`);
         console.log(`${m.concepto}`);
         console.log(`${m.descripcion}`);
         console.log(`${m.pago}`);
+        console.log("---------------------------------")
     });
     }
 
@@ -118,9 +137,11 @@ export async function ListarPorCliente() {
     };
     console.log("============= Movimentos del cliente =============")
     movimientosPorCliente.forEach(m => { 
+        console.log("---------------------------------")
         console.log(`${m.fecha}`);
         console.log(`${m.clienteNombre}`);
         console.log(`${m.planNombre}`);
         console.log(`${m.pago}`);
+        console.log("---------------------------------")
     });
 }

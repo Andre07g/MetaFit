@@ -18,11 +18,11 @@ export default class GestionFinancieraRepositorio{
     }
 
     async listarPorTipo(tipo){
-        return await this.coleccion.find({tipo:tipo})
+        return await this.coleccion.find({tipo:tipo}).toArray()
     }
 
     async listarPorCliente (id){
-        return await this.coleccion.find({clienteID: new ObjectId(id)})
+        return await this.coleccion.find({clienteID: new ObjectId(id)}).toArray()
     }
 }
 

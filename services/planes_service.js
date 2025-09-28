@@ -27,4 +27,7 @@ export default class PlanesService{
         return await this.repositorio.eliminar(planObj)
     }
     
+    async buscarPorId(id){
+        return await this.repositorio.buscarId(id)
+    }
 }

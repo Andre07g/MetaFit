@@ -1,7 +1,8 @@
  import * as ClientesCommand from '../commands/clientes_command.js';
 // import * as ContratosCommand from '../commands/contratos_command.js';
-// import * as NutricionCommand from '../commands/nutricion_command.js';
-//  import * as PlanesCommand from '../commands/planes_command.js';
+ import * as NutricionCommand from '../commands/nutricion_command.js';
+import * as PlanesCommand from '../commands/planes_command.js';
+import * as GestionCommand from '../commands/gestion_command.js';
 import * as SeguimientoCommand from '../commands/seguimiento_command.js';
 import {preguntar, preguntarNum, opciones,sleep } from '../utils/utilidades.js';
 import {MongoClient} from 'mongodb'
@@ -216,7 +217,7 @@ try {
 
 //Clientes
 
-// ClientesCommand.setBase(base);
+ClientesCommand.setBase(base);
 // await ClientesCommand.CrearCliente();
 //  await ClientesCommand.EditarCliente();
 //  await ClientesCommand.ListarClientePorDocumento()
@@ -224,7 +225,7 @@ try {
 
 //Planes
 
-// PlanesCommand.setBase(base);
+ PlanesCommand.setBase(base);
 // await PlanesCommand.CrearPlan()
 // await PlanesCommand.EditarPlan();
 // await PlanesCommand.ListarPlanes();
@@ -232,23 +233,59 @@ try {
 
 // Nutricion
 
-// NutricionCommand.setBase(base);
+ NutricionCommand.setBase(base);
 // await NutricionCommand.CrearPlan();
 // await NutricionCommand.ListarPlanes();
 // await NutricionCommand.Eliminarplan();
 
 // Seguimiento
 
-// SeguimientoCommand.setBase(base,cliente)
+ SeguimientoCommand.setBase(base,cliente)
 // await SeguimientoCommand.CrearSeguimiento(cliente);
 // await SeguimientoCommand.EliminarSeguimiento(cliente)
 // await SeguimientoCommand.ListarSeguimientos(cliente)
+
+// Gestion Financiera
+
+GestionCommand.setBase(base,cliente);
+// await GestionCommand.CrearMovimiento(cliente);
+// await GestionCommand.ListarPorTipo()
+// await GestionCommand.ListarPorCliente()
+let entrar= true;
+while(entrar==true){
+    const opcionMenu = await opciones("Crear Cliente","Crear Plan","Crear Plan Nutricional","Crear Seguimiento","Crear Movimiento","Ver Movimientos")
+    switch (opcionMenu) {
+        case "Crear Cliente":
+            await ClientesCommand.CrearCliente()
+            break;
+        case "Crear Plan":
+            await PlanesCommand.CrearPlan()
+            break;
+        case "Crear Plan Nutricional":
+            await NutricionCommand.CrearPlan()
+            break;
+        case "Crear Seguimiento":
+            await SeguimientoCommand.CrearSeguimiento(cliente)
+            break;
+        case "Crear Movimiento":
+            await GestionCommand.CrearMovimiento()
+            break;
+        case "Ver Movimientos":
+            await GestionCommand.ListarPorCliente()
+            break;
+        case "Salir":
+            entrar=false;
+            break;
+    }
+
+}
+
 
 
 
 
 } catch (error) {
-  console.error("Error en la aplicación:", error);
+  console.error("Error en la aplicación:", error.message);
 } finally {
   await cerrarConexion();
   console.log("Conexión a la base de datos cerrada.");

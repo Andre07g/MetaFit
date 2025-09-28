@@ -1,7 +1,7 @@
 import GestionFinancieraRepositorio from "../repositories/gestion_repository.js"
 
 export default class GestionService{
-    constructor(base){
+    constructor(base,cliente){
         this.repositorio = new GestionFinancieraRepositorio(base);
     }
 
