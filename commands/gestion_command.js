@@ -81,7 +81,25 @@ export async function CrearIngreso() {
 
 export async function ListarPorTipo() {
     const tipoMovimiento = await opciones("Ingreso", "Egreso");
-    await gestionServicio.listarPorTipo(tipoMovimiento)
+    const movimientosPorTipo = await gestionServicio.listarPorTipo(tipoMovimiento)
+    console.log("============= Movimentos por Tipo =============")
+    if (tipoMovimiento === "Ingreso"){
+        movimientosPorTipo.forEach(m => { 
+        console.log(`${m.fecha}`);
+        console.log(`${m.clienteNombre}`);
+        console.log(`${m.planNombre}`);
+        console.log(`${m.pago}`);
+    });
+    }
+    else {
+        movimientosPorTipo.forEach(m => { 
+        console.log(`${m.fecha}`);
+        console.log(`${m.concepto}`);
+        console.log(`${m.descripcion}`);
+        console.log(`${m.pago}`);
+    });
+    }
+
 }
 
 export async function ListarPorCliente() {
@@ -94,9 +112,15 @@ export async function ListarPorCliente() {
         throw new Error("Cliente no encontrado")
     };
 
-    const movimientosPorCliente = await gestionServicio.listaPorCliente(clientePorDocumento._id)
+    const movimientosPorCliente = await gestionServicio.listaPorCliente(clientePorDocumento._id);
+    if(!movimientosPorCliente){
+        throw new Error("Este cliente no posee movimientos");
+    };
+    console.log("============= Movimentos del cliente =============")
     movimientosPorCliente.forEach(m => { 
-        console.log()
+        console.log(`${m.fecha}`);
+        console.log(`${m.clienteNombre}`);
+        console.log(`${m.planNombre}`);
+        console.log(`${m.pago}`);
     });
-
 }
