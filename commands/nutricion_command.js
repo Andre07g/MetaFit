@@ -76,7 +76,7 @@ export async function CrearPlan() {
         await nutricionService.crearPlanNutricional(nuevoPlanNutricional);
         console.log("Plan registrado correctamente");
     } catch (error) {
-        console.log("Error al crear plan:", error)
+        console.log("Error al crear plan:", error.message)
     }
 }
 
@@ -98,7 +98,7 @@ export async function  ListarPlanes() {
         });
         console.log("===================================")
     } catch (error) {
-       console.log("Ocurrió un error al mostrar planes",error) 
+       console.log("Ocurrió un error al mostrar planes",error.message) 
     }
 }
 
@@ -121,7 +121,7 @@ export async function Eliminarplan(){
         await nutricionService.eliminarPlanNutricional(planSeleccionadoEliminar);
         console.log("Plan eliminado correctamente");
     } catch (error) {
-        console.log("Error al eliminar plan",error)
+        console.log("Error al eliminar plan",error.message)
     }
 }
 
