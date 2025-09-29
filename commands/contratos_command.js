@@ -92,7 +92,7 @@ export async function FinalizarContrato() {
         await contratoServicio.finalizar(contratoSeleccionado);
         console.log("Contrato finalizado exitosamente")
     } catch (error) {
-        console.log("Ocurrió un error", error)
+        console.log("Ocurrió un error", error.message)
     }
 
 }
