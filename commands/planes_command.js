@@ -24,9 +24,11 @@ export async function CrearPlan() {
         if (isNaN(precio) || precio<=0) { throw new Error("El precio debe ser un numero no menor de 0"); };
         const planNuevo = new Planes(nombre, duracion, metaFisica, nivel, precio);
         await planesServicio.crearPlan(planNuevo);
-        console.log("Plan registrado correctamente");
+        console.log("Plan registrado correctamente");;await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Error al crear plan:", error.message)
+        console.log("Error al crear plan:", error.message);await sleep(1000);
+        console.clear();
     }
 }
 
@@ -50,9 +52,11 @@ export async function EditarPlan() {
         if (isNaN(planSeleccionado.precio)) { throw new Error("El precio debe ser un numero"); };
 
         await planesServicio.editarPlan(planSeleccionado._id,planSeleccionado);
-        console.log("Plan actualizado correctamente");
+        console.log("Plan actualizado correctamente");await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Error al editar plan:", error.message);
+        console.log("Error al editar plan:", error.message);;await sleep(1000);
+        console.clear();
 
     }
 }
@@ -72,9 +76,11 @@ export async function ListarPlanes() {
             console.log(`Meta: ${p.metaFisica}`)
             console.log(`Precio: ${p.precio}`);
         });
-        console.log("===================================")
+        console.log("===================================");await sleep(1000);
+        console.clear();
     } catch (error) {
-       console.log("Ocurrió un error al mostrar planes",error.message) 
+       console.log("Ocurrió un error al mostrar planes",error.message) ;await sleep(1000);
+       console.clear();
     }
 }
 
@@ -95,9 +101,11 @@ export async function Eliminarplan(){
             }
         ]);
         await planesServicio.eliminarPlan(planSeleccionadoEliminar);
-        console.log("Plan eliminado correctamente");
+        console.log("Plan eliminado correctamente");;await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Error al eliminar plan",error.message)
+        console.log("Error al eliminar plan",error.message);await sleep(1000);
+        console.clear();
     }
 }
 
