@@ -31,6 +31,8 @@ export async function CrearPlan() {
                     const nuevoDesayuno = {nombre:nombreDesayuno,calorias:caloriasDesayuno};
                     desayuno.push(nuevoDesayuno);
                     console.log("Desayuno añadido exitosamente");
+                    ;await sleep(1000);
+                        console.clear();
                     break;
                 case "Añadir almuerzo":
                     const nombreAlmuerzo = await preguntar("Ingrese el nombre del almuerzo");
@@ -39,7 +41,8 @@ export async function CrearPlan() {
                     if(isNaN(caloriasAlmuerzo) || caloriasAlmuerzo.length===0 || caloriasAlmuerzo<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoAlmuerzo = {nombre:nombreAlmuerzo,calorias:caloriasAlmuerzo};
                     almuerzo.push(nuevoAlmuerzo);
-                    console.log("Almuerzo añadido exitosamente");
+                    console.log("Almuerzo añadido exitosamente");;await sleep(1000);
+                    console.clear();
                     break;
                 case "Añadir cena":
                     const nombreCena =await preguntar("Ingrese el nombre del cena");
@@ -48,13 +51,18 @@ export async function CrearPlan() {
                     if(isNaN(caloriasCena) || caloriasCena.length===0 || caloriasCena<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoCena = {nombre:nombreCena,calorias:caloriasCena};
                     cena.push(nuevoCena);
-                    console.log("Cena añadido exitosamente");
+                    console.log("Cena añadido exitosamente");;await sleep(1000);
+                    console.clear();
                     break;
                 case "Finalizado":
-                    if(desayuno.length<=0){console.log("Debes agregar al menos un desayuno");break;}
-                    if(almuerzo.length<=0){console.log("Debes agregar al menos un almuerzo");break;}
-                    if(cena.length<=0){console.log("Debes agregar al menos una cena");break;}
-                    console.log("Volviendo al menu anterior");
+                    if(desayuno.length<=0){console.log("Debes agregar al menos un desayuno");break;;await sleep(1000);
+                        console.clear();}
+                    if(almuerzo.length<=0){console.log("Debes agregar al menos un almuerzo");break;;await sleep(1000);
+                        console.clear();}
+                    if(cena.length<=0){console.log("Debes agregar al menos una cena");break;;await sleep(1000);
+                        console.clear();}
+                    console.log("Volviendo al menu anterior");;await sleep(1000);
+                    console.clear();
                     cicloComidas=false;
                     break;
             }
@@ -74,9 +82,11 @@ export async function CrearPlan() {
         ]);
         const nuevoPlanNutricional = new Nutricion(nombre,desayuno,almuerzo,cena,new ObjectId(clienteSeleccionado._id));
         await nutricionService.crearPlanNutricional(nuevoPlanNutricional);
-        console.log("Plan registrado correctamente");
+        console.log("Plan registrado correctamente");;await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Error al crear plan:", error.message)
+        console.log("Error al crear plan:", error.message);await sleep(1000);
+        console.clear();
     }
 }
 
@@ -96,9 +106,11 @@ export async function  ListarPlanes() {
             p.almuerzo.forEach(pa=>{console.log(`Almuerzos: ${pa.nombre}`);})
             p.cena.forEach(pc=>{console.log(`Cenas: ${pc.nombre}`);})
         });
-        console.log("===================================")
+        console.log("===================================");await sleep(1000);
+        console.clear();
     } catch (error) {
-       console.log("Ocurrió un error al mostrar planes",error.message) 
+       console.log("Ocurrió un error al mostrar planes",error.message) ;await sleep(1000);
+       console.clear();
     }
 }
 
@@ -119,9 +131,11 @@ export async function Eliminarplan(){
             }
         ]);
         await nutricionService.eliminarPlanNutricional(planSeleccionadoEliminar);
-        console.log("Plan eliminado correctamente");
+        console.log("Plan eliminado correctamente");;await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Error al eliminar plan",error.message)
+        console.log("Error al eliminar plan",error.message);await sleep(1000);
+        console.clear();
     }
 }
 
