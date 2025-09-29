@@ -28,20 +28,21 @@ export async function CrearSeguimiento(cliente) {
                 }
             ]);
             const pesoActual = await preguntarNum("Ingrese el peso actual");
-            if (pesoActual.length === 0) { throw new Error("El peso no puede estar vacio"); }
+            if (isNaN(pesoActual)) { throw new Error("El peso debe ser un numero"); }
             const porcentajeDeGrasa = await preguntarNum("Ingrese el porcentaje de grasa");
-            if (porcentajeDeGrasa.length === 0) { throw new Error("El porcentaje debe ser (1-100)"); }
+            if (isNaN(porcentajeDeGrasa) || porcentajeDeGrasa>100 || porcentajeDeGrasa<0) { throw new Error("El porcentaje debe ser entre el 1 y el 100"); }
             let medidas = [];
             const pierna = await preguntarNum("Ingrese la medida de la pierna");
-            if (pierna.length === 0) { throw new Error("La medida debe ser numerica y no estar vacia"); }
+            if (isNaN(pierna)) { throw new Error("La medida debe ser numerica y no estar vacia"); }
             const brazo = await preguntarNum("Ingrese la medida del brazo");
-            if (brazo.length === 0) { throw new Error("La medida debe ser numerica y no estar vacia"); }
+            if (isNaN(brazo)) { throw new Error("La medida debe ser numerica y no estar vacia"); }
             const cintura = await preguntarNum("Ingrese medida de la cintura");
-            if (cintura.length === 0) { throw new Error("La medida debe ser numerica y no estar vacia"); }
+            if (isNaN(cintura)) { throw new Error("La medida debe ser numerica y no estar vacia"); }
             const pecho = await preguntarNum("Ingrese medida del pecho");
-            if (pecho.length === 0) { throw new Error("La medida debe ser numerica y no estar vacia"); }
+            if (isNaN(pecho)) { throw new Error("La medida debe ser numerica y no estar vacia"); }
             medidas.push({ parte: "pierna", valor: pierna }, { parte: "brazo", valor: brazo }, { parte: "cintura", valor: cintura }, { parte: "pecho", valor: pecho })
             const comentarios = await preguntar("Ingrese comentarios");
+            if(comentarios.length<=0){throw new Error("El comentario no puede estar vacio");}
             const nuevoSeguimiento = new Seguimiento(new ObjectId(clienteSeleccionado._id), pesoActual, porcentajeDeGrasa, medidas, comentarios, new Date());
             console.log(nuevoSeguimiento)
             await seguimientoServicio.crearSeguimiento(nuevoSeguimiento);
