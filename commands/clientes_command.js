@@ -25,7 +25,7 @@ export async function CrearCliente() {
         await clienteServicio.agregarCliente(clienteNuevo);
         console.log("Cliente registrado correctamente");
     } catch (error) {
-        console.log("Error al crear cliente:", error)
+        console.log("Error al crear cliente:", error.message)
     }
 }
 
@@ -55,7 +55,7 @@ export async function EditarCliente() {
         await clienteServicio.editarCliente(clienteSeleccionado._id, clienteSeleccionado);
         console.log("Cliente actualizado correctamente");
     } catch (error) {
-        console.log("Error al editar cliente:", error);
+        console.log("Error al editar cliente:", error.message);
 
     }
 }
@@ -77,7 +77,7 @@ export async function ListarClientes() {
         });
         console.log("===================================")
     } catch (error) {
-        console.log("Ocurrió un error al mostrar clientes", error)
+        console.log("Ocurrió un error al mostrar clientes", error.message)
     }
 }
 
@@ -117,6 +117,6 @@ export async function EliminarCliente() {
         await clienteServicio.eliminarCliente(clienteSeleccionadoEliminar);
         console.log("Cliente eliminado correctamente");
     } catch (error) {
-        console.log("Error al eliminar cliente", error)
+        console.log("Error al eliminar cliente", error.message)
     }
 }
