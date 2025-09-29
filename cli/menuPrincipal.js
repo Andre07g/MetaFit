@@ -7,7 +7,6 @@ import * as SeguimientoCommand from '../commands/seguimiento_command.js';
 import { preguntar, preguntarNum, opciones, sleep } from '../utils/utilidades.js';
 import { MongoClient } from 'mongodb'
 
-
 export async function menuPrincipal(base, cliente) {
     let salirMain = false;
     GestionCommand.setBase(base, cliente);
@@ -18,28 +17,45 @@ export async function menuPrincipal(base, cliente) {
     NutricionCommand.setBase(base);
     console.log('Bienvenido');
     while (salirMain == false) {
-        const  opcion  = await opciones("Clientes", "Nutricion","Planes de Entrenamiento", "Seguimiento", "Contratos", "Gestión Financiera", "Salir")
+
+        await sleep(1000);
+        console.clear();
+        const opcion = await opciones("Clientes", "Nutricion", "Planes de Entrenamiento", "Seguimiento", "Contratos", "Gestión Financiera", "Salir")
         console.log(opcion)
         switch (opcion) {
             case "Clientes":
+                await sleep(1000);
+                console.clear();
                 await subMenuClientes();
                 break;
             case "Planes de Entrenamiento":
+                await sleep(1000);
+                console.clear();
                 await subMenuPlanes();
                 break
             case "Seguimiento":
+                await sleep(1000);
+                console.clear();
                 await subMenuSeguimiento();
                 break
             case "Nutricion":
+                await sleep(1000);
+                console.clear();
                 await subMenuNutricion();
                 break
             case "Contratos":
+                await sleep(1000);
+                console.clear();
                 await subMenuContratos();
                 break
             case "Gestión Financiera":
+                await sleep(1000);
+                console.clear();
                 await subMenuGestion();
                 break
             case "Salir":
+                await sleep(1000);
+                console.clear();
                 salirMain = true;
                 console.log("Saliendo...")
                 break
@@ -56,7 +72,7 @@ export async function menuPrincipal(base, cliente) {
 async function subMenuClientes() {
     let exitCliente = false;
     while (!exitCliente) {
-        const opcionCliente  = await opciones("Crear cliente", "Editar cliente", "Eliminar cliente", "Buscar cliente", "Listar clientes", "Regresar al menú anterior")
+        const opcionCliente = await opciones("Crear cliente", "Editar cliente", "Eliminar cliente", "Buscar cliente", "Listar clientes", "Regresar al menú anterior")
 
         switch (opcionCliente) {
             case "Crear cliente":
@@ -89,7 +105,7 @@ async function subMenuPlanes() {
     let exitPlanes = false;
     while (!exitPlanes) {
 
-        const  opcionPlanes  = await opciones("Crear plan de entrenamiento", "Editar un plan de entrenamiento", "Eliminar un plan de entrenamiento", "Listar los planes de entrenamiento", "Regresar al menú anterior")
+        const opcionPlanes = await opciones("Crear plan de entrenamiento", "Editar un plan de entrenamiento", "Eliminar un plan de entrenamiento", "Listar los planes de entrenamiento", "Regresar al menú anterior")
 
         switch (opcionPlanes) {
             case "Crear plan de entrenamiento":
@@ -118,7 +134,7 @@ async function subMenuPlanes() {
 async function subMenuSeguimiento() {
     let exitSeguimiento = false;
     while (!exitSeguimiento) {
-        const opcionSeguimiento  = await opciones("Registrar avance", "Eliminar Avance", "Ver avance de un cliente", "Regresar al menú anterior")
+        const opcionSeguimiento = await opciones("Registrar avance", "Eliminar Avance", "Ver avance de un cliente", "Regresar al menú anterior")
 
         switch (opcionSeguimiento) {
             case "Registrar avance":
@@ -145,7 +161,7 @@ async function subMenuSeguimiento() {
 async function subMenuContratos() {
     let exitContratos = false;
     while (!exitContratos) {
-        const  opcionContratos  = await opciones("Crear contrato", "Finalizar contrato", "Ver contratos", "Regresar al menú anterior")
+        const opcionContratos = await opciones("Crear contrato", "Finalizar contrato", "Ver contratos", "Regresar al menú anterior")
 
         switch (opcionContratos) {
             case "Crear contrato":
@@ -171,8 +187,8 @@ async function subMenuContratos() {
 async function subMenuGestion(cliente) {
     let exitGestion = false;
     while (!exitGestion) {
-        const  opcionGestion 
-         = await opciones("Crear Movimiento", "Consultar Historial de Movimientos", "Balance por clientes", "Balance general", "Volver al menu anterior")
+        const opcionGestion
+            = await opciones("Crear Movimiento", "Consultar Historial de Movimientos", "Balance por clientes", "Balance general", "Volver al menu anterior")
 
         switch (opcionGestion) {
             case "Crear Movimiento":
@@ -194,11 +210,11 @@ async function subMenuGestion(cliente) {
     }
 };
 
-async function subMenuNutricion(){
+async function subMenuNutricion() {
     let exitNutricion = false;
     while (!exitNutricion) {
-        const  opcionNutricion
-         = await opciones("Crear Plan Nutricional","Eliminar Plan Nutricional","Listar Planes","Volver al menu anterior")
+        const opcionNutricion
+            = await opciones("Crear Plan Nutricional", "Eliminar Plan Nutricional", "Listar Planes", "Volver al menu anterior")
         switch (opcionNutricion) {
             case "Crear Plan Nutricional":
                 await NutricionCommand.CrearPlan();
