@@ -3,15 +3,20 @@ import ContratoService from "../services/contratos_service.js";
 import ClientesService from "../services/clientes_service.js";
 import PlanesService from "../services/planes_service.js"
 import Contrato from "../models/Contrato.js";
-import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
+import { preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
+
+let contratoServicio;
+let clienteServicio;
+let planesServicio;
+
+export function setbase(base, cliente) {
+    contratoServicio = new ContratoService(base, cliente);
+    clienteServicio = new ClientesService(base);
+    planesServicio = new PlanesService(base);
+}
 
 
-const contratoServicio = new ContratoService();
-const clienteServicio = new ClientesService();
-const planesServicio = new PlanesService();
-
-
-export async function CrearContrato() {
+export async function CrearContrato(base, cliente) {
     const listaClientes = await clienteServicio.listarClientes();
     if (listaClientes.length === 0) {
         console.log("No hay clientes para editar");
@@ -39,34 +44,55 @@ export async function CrearContrato() {
         }
     ]);
 
-    const nuevoContrato = new Contrato(clienteSeleccionado,planSeleccionado);
-    await contratoServicio.crearContrato(nuevoContrato,clienteSeleccionado,planSeleccionado);
+    const nuevoContrato = new Contrato(clienteSeleccionado, planSeleccionado);
+    await contratoServicio.crearContrato(nuevoContrato, clienteSeleccionado, planSeleccionado);
     console.log("Contrato creado exitosamente")
 }
 
 export async function ListarContratos() {
-        await contratoServicio.listarContratos();
+    const contratos = await contratoServicio.listarContratos();
+    if (contratos.length === 0) {
+        console.log("No hay contratos");
+        return;
+    }
+    console.log("================== Lista de Contratos =================");
+    contratos.forEach(c => {
+        console.log("-------------------------------------------------------");
+        console.log(`Cliente: ${c.clienteNombre}`);
+        console.log(`Plan: ${c.planNombre}`);
+        console.log(`Duración: ${c.duracion}`);
+        console.log(`Fecha de Inicio: ${c.fechaInicio.toLocaleDateString()}`);
+        console.log(`Fecha de Finalización: ${c.fechaFinalizacion ? c.fechaFinalizacion.toLocaleDateString() : 'Activo'}`);
+        console.log(`Precio: ${c.precio}`);
+        console.log("-------------------------------------------------------");
+    });
+
+    console.log("=======================================================");
 }
 
 export async function FinalizarContrato() {
     try {
-            const listaContratos = await contratoServicio.listarContratos();
-    if (listaContratos.length === 0) {
-        console.log("No hay contratos");
-        return;
-    }
-    const { contratoSeleccionado } = await inquirer.prompt([
-        {
-            type: "list",
-            name: "clienteSeleccionado",
-            message: "Seleccione el cliente:",
-            choices: listaContratos.map(c => ({ name: `${c.fecha} (${c.clienteNombre}---${c.planNombre})`, value: c }))
+        const listaContratos = await contratoServicio.listarContratos();
+        if (listaContratos.length === 0) {
+            console.log("No hay contratos");
+            return;
         }
-    ]);
-    await contratoServicio.finalizar(contratoSeleccionado);
-    console.log("Contrato finalizado exitosamente")
+        const { contratoSeleccionado } = await inquirer.prompt([
+            {
+                type: "list",
+                name: "contratoSeleccionado",
+                message: "Seleccione el contrato:",
+                choices: listaContratos.map(c => ({ name: `${new Date(c.fechaInicio).toLocaleDateString('es-ES')} | Cliente: (${c.clienteNombre} | Plan: ${c.planNombre})`, value: c }))
+            }
+        ]);
+        if(contratoSeleccionado.fechaFinalizacion){
+            console.log("El contrato ya fue finalizado previamente")
+            return;
+        }
+        await contratoServicio.finalizar(contratoSeleccionado);
+        console.log("Contrato finalizado exitosamente")
     } catch (error) {
-        console.log("Ocurrió un error",error)
+        console.log("Ocurrió un error", error)
     }
-    
+
 }

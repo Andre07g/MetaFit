@@ -30,7 +30,7 @@ export default class ClientesRepositorio {
     }
 
     async asignarPlan (cliente,plan){
-        return await this.coleccion.updateOne({_id:new ObjectId(cliente._id)},{$push:{planes:new ObjectId(plan._id)}})
+        return await this.coleccion.updateOne({ _id:new ObjectId(cliente._id)},{$push:{planes:new ObjectId(plan._id)}})
     }
 
     async eliminarPlan(clienteId,planId){

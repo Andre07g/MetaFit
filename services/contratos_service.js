@@ -3,20 +3,21 @@ import ClientesRepositorio from "../repositories/clientes_repository.js";
 import PlanesRepositorio from "../repositories/planes_repository.js";
 
 export default class ContratosService {
-    constructor(base) {
+    constructor(base,cliente) {
         this.repositorio = new ContratosRepositorio(base);
         this.clientesRepo = new ClientesRepositorio(base);
         this.planesRepo = new PlanesRepositorio(base);
+        this.cliente = cliente;
     }
 
-    async crearContrato(contratoObj, clienteObj, planObj) {
-        if (!contratoObj || clienteObj || planObj) {
+    async crearContrato(contratoObj, clienteObj, planObj,) {
+        if (!contratoObj || !clienteObj || !planObj) {
             throw new Error("Datos incompletos");
         }
         const session = this.cliente.startSession();
         try {
             await session.withTransaction(async () => {
-                await this.clientesRepo.asignarPlan(planObj._id);
+                await this.clientesRepo.asignarPlan(clienteObj,planObj);
                 const contrato = {
                     clienteNombre: clienteObj.nombre,
                     clienteId: new Object(clienteObj._id),
@@ -32,7 +33,7 @@ export default class ContratosService {
             })
         }
         catch (error) {
-            console.error("Error al realizar contrato:", error.message);
+            console.error("Error al realizar contrato:", error);
         } finally {
             await session.endSession();
         }
@@ -40,7 +41,7 @@ export default class ContratosService {
     }
 
     async listarContratos() {
-        return await this.repositorio.listarContratos();
+        return await this.repositorio.listar();
     }
 
     async finalizar(contratoObj) {
@@ -48,11 +49,11 @@ export default class ContratosService {
         try {
             await session.withTransaction(async () => {
                 await this.repositorio.finalizar(contratoObj);
-                await this.repositorio.eliminarPlan(contratoObj.clienteId,contratoObj.planId);
+                await this.clientesRepo.eliminarPlan(contratoObj.clienteId,contratoObj.planId);
                 console.log("Contrato cancelado exitosamente, el plan fue removido")
             })
         } catch (error) {
-            console.error("Error al realizar contrato:", error.message);
+            console.error("Error al realizar contrato:", error);
         } finally {
             await session.endSession();
         }
