@@ -29,7 +29,8 @@ export async function CrearMovimiento(cliente) {
         const fecha = new Date();
         switch (tipo) {
             case "Ingreso":
-            const documento = await preguntar ("Ingrese el documento")
+            const documento = await preguntar ("Ingrese el documento");
+            if(documento.length !=10){throw new Error("El documento debe tener 10 digitos");}
             const clienteEncontrado = await clienteServicio.listarPorDocumento(documento);
             if (!clienteEncontrado){
                 throw new Error ("El cliente no fue encontrado")
@@ -48,19 +49,9 @@ export async function CrearMovimiento(cliente) {
                     ]);
             console.log(planSeleccionado)
             const planEncontrado = await planesServicio.buscarPorId(planSeleccionado);
-            const nuevoIngreso = {
-                tipo: tipo,
-                clienteID : clienteEncontrado._id,
-                clienteNombre: clienteEncontrado.nombre,
-                planID: planEncontrado._id,
-                planNombre: planEncontrado.nombre,
-                pago: planEncontrado.precio,
-                fecha: fecha
-            }
-
+            const nuevoIngreso = new MovimientoFinanciero(tipo,clienteEncontrado,planEncontrado,null, fecha, null,null);
             await gestionServicio.crearIngreso(nuevoIngreso);
             console.log("Ingreso creado correctamente")
-
                 break;
             case "Egreso":
                 const concepto = await preguntar("Ingrese el concepto del egreso");
@@ -72,19 +63,10 @@ export async function CrearMovimiento(cliente) {
                     throw new Error ("La descripción no puede estar vacío")
                 };
                 const costo = await preguntarNum("Ingrese el valor del egreso")
-                if (isNaN(costo)){
-                    throw new Error ("El egreso debe ser un valor númerico")
+                if (isNaN(costo) || costo<=0){
+                    throw new Error ("El egreso debe ser un valor númerico mayor a 0")
                 };
-                if (costo < 0){
-                    throw new Error("El valor del costo debe ser mayor a 0")
-                }
-                const nuevoEgreso = {
-                    tipo: tipo,
-                    concepto: concepto,
-                    descripcion: descripcion,
-                    fecha: fecha
-                }
-
+                const nuevoEgreso = new MovimientoFinanciero(tipo,null,null,concepto,fecha,descripcion,costo)
                 await gestionServicio.crearEgreso(nuevoEgreso);
                 console.log("Egreso creado correctamente");
                 break;
