@@ -46,10 +46,12 @@ export async function CrearSeguimiento(cliente) {
             const nuevoSeguimiento = new Seguimiento(new ObjectId(clienteSeleccionado._id), pesoActual, porcentajeDeGrasa, medidas, comentarios, new Date());
             console.log(nuevoSeguimiento)
             await seguimientoServicio.crearSeguimiento(nuevoSeguimiento);
-            console.log("Seguimiento creado exitosamente")
+            console.log("Seguimiento creado exitosamente");await sleep(1000);
+            console.clear();
         })
     } catch (error) {
-        console.log("Error al crear seguimiento", error.message)
+        console.log("Error al crear seguimiento", error.message);await sleep(1000);
+        console.clear();
     } finally {
         await session.endSession();
     }
@@ -74,11 +76,13 @@ export async function EliminarSeguimiento(cliente) {
                 }
             ]);
             await seguimientoServicio.eliminarSeguimiento(seguimientoSeleccionado);
-            console.log("Seguimiento eliminado correctamente")
+            console.log("Seguimiento eliminado correctamente");await sleep(1000);
+            console.clear();
 
         });
     } catch (error) {
-        console.log("Error al eliminar seguimiento", error.message)
+        console.log("Error al eliminar seguimiento", error.message);await sleep(1000);
+        console.clear();
     } finally {
         await session.endSession();
     }
@@ -116,8 +120,10 @@ export async function ListarSeguimientos() {
       console.log(`-Pecho: ${c.medidas[3].valor}`);
       console.log(`Comentarios: ${c.comentarios}`);
     });
-    console.log("===================================");
+    console.log("===================================");await sleep(1000);
+    console.clear();
   } catch (error) {
-    console.log("Ocurrió un error al mostrar clientes", error.message);
+    console.log("Ocurrió un error al mostrar clientes", error.message);await sleep(1000);
+    console.clear();
   }
 }
