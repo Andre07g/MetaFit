@@ -1,5 +1,5 @@
 export default class MovimientoFinanciero {
-    constructor({ tipo, cliente, plan, concepto, fecha = new Date(), descripcion}) {
+    constructor({ tipo, cliente, plan, concepto, fecha = new Date(), descripcion,pago}) {
         this.tipo = tipo; 
         this.fecha = fecha;
         if (tipo === "Ingreso") {
