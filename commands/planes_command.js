@@ -17,11 +17,11 @@ export async function CrearPlan() {
         const nombre = await preguntar("Ingrese nombre del plan:");
         if (nombre.length === 0) { throw new Error("El nombre no puede estar vacio"); };
         const duracion = await preguntarNum("Ingrese la duracion(dias):");
-        if (isNaN(duracion)) { throw new Error("La duracion debe ser un numero"); };
+        if (isNaN(duracion) || duracion<=0) { throw new Error("La duracion debe ser un numero no menor de 0"); };
         const metaFisica = await opciones("Bajar de peso","Aumentar masa muscular","Mejorar rendimiento","Mejorar fuerza","Mejorar elasticidad");
         const nivel = await opciones("Principiante","Intermedio","Avanzado");
         const precio = await preguntarNum("Ingrese el precio");
-        if (isNaN(precio)) { throw new Error("El precio debe ser un numero"); };
+        if (isNaN(precio) || precio<=0) { throw new Error("El precio debe ser un numero no menor de 0"); };
         const planNuevo = new Planes(nombre, duracion, metaFisica, nivel, precio);
         await planesServicio.crearPlan(planNuevo);
         console.log("Plan registrado correctamente");
