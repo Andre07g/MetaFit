@@ -51,7 +51,8 @@ export async function CrearMovimiento(cliente) {
             const planEncontrado = await planesServicio.buscarPorId(planSeleccionado);
             const nuevoIngreso = new MovimientoFinanciero(tipo,clienteEncontrado,planEncontrado,null, fecha, null,null);
             await gestionServicio.crearIngreso(nuevoIngreso);
-            console.log("Ingreso creado correctamente")
+            console.log("Ingreso creado correctamente");await sleep(1000);
+            console.clear();
                 break;
             case "Egreso":
                 const concepto = await preguntar("Ingrese el concepto del egreso");
@@ -69,15 +70,19 @@ export async function CrearMovimiento(cliente) {
                 const nuevoEgreso = new MovimientoFinanciero(tipo,null,null,concepto,fecha,descripcion,costo)
                 await gestionServicio.crearEgreso(nuevoEgreso);
                 console.log("Egreso creado correctamente");
+                ;await sleep(1000);
+                        console.clear();
                 break;
         }
     } catch (error) {
-console.log("Hubo un error",error.message)
+console.log("Hubo un error",error.message);await sleep(1000);
+console.clear();
     }
 }
 
 export async function ListarPorTipo() {
-    const tipoMovimiento = await opciones("Ingreso", "Egreso");
+    try {
+        const tipoMovimiento = await opciones("Ingreso", "Egreso");
     const movimientosPorTipo = await gestionServicio.listarPorTipo(tipoMovimiento)
     console.log("============= Movimentos por Tipo =============")
     if (tipoMovimiento === "Ingreso"){
@@ -89,6 +94,8 @@ export async function ListarPorTipo() {
         console.log(`${m.pago}`);
         console.log("---------------------------------")
     });
+    ;await sleep(1000);
+                        console.clear();
     }
     else {
         movimientosPorTipo.forEach(m => { 
@@ -99,18 +106,30 @@ export async function ListarPorTipo() {
         console.log(`${m.pago}`);
         console.log("---------------------------------")
     });
+    ;await sleep(1000);
+                        console.clear();
     }
+    } catch (error) {
+        console.log(error.message);await sleep(1000);
+        console.clear();
+    }
+    
 
 }
 
 export async function ListarPorCliente() {
+    try {
+        
     const documento = await preguntar("Ingrese el documento");
     if (documento.length === 0){
-        throw new Error("El campo de documento no puede estar vacío")
+        throw new Error("El campo de documento no puede estar vacío");
+        ;await sleep(1000);
+                        console.clear();
     };
     const clientePorDocumento = await clienteServicio.listarPorDocumento(documento);
     if (!clientePorDocumento){
-        throw new Error("Cliente no encontrado")
+        throw new Error("Cliente no encontrado");await sleep(1000);
+        console.clear();
     };
 
     const movimientosPorCliente = await gestionServicio.listaPorCliente(clientePorDocumento._id);
@@ -126,4 +145,8 @@ export async function ListarPorCliente() {
         console.log(`${m.pago}`);
         console.log("---------------------------------")
     });
+    } catch (error) {
+        console.log(error.message);await sleep(1000);
+        console.clear();
+    }
 }
