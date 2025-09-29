@@ -17,9 +17,9 @@ export async function CrearCliente() {
         const nombre = await preguntar("Ingrese nombre completo:");
         if (nombre.length === 0) { throw new Error("El nombre no puede estar vacio"); };
         const documento = await preguntar("Ingrese el documento:");
-        if (documento.length === 0) { throw new Error("El documento debe tener 10 digitos"); };
+        if (documento.length != 10) { throw new Error("El documento debe tener 10 digitos"); };
         const telefono = await preguntar("Ingrese el telefono:");
-        if (telefono.length === 0) { throw new Error("El telefono debe tener 10 digitos (+57XXXXXXXXXX)"); };
+        if (telefono.length != 10) { throw new Error("El telefono debe tener 10 digitos"); };
         const planes = [];
         const clienteNuevo = new Cliente(nombre, documento, telefono,planes );
         await clienteServicio.agregarCliente(clienteNuevo);
