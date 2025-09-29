@@ -19,7 +19,9 @@ export function setbase(base, cliente) {
 export async function CrearContrato(base, cliente) {
     const listaClientes = await clienteServicio.listarClientes();
     if (listaClientes.length === 0) {
-        console.log("No hay clientes para editar");
+        console.log("No hay clientes");
+        ;await sleep(1000);
+                        console.clear();
         return;
     }
     const { clienteSeleccionado } = await inquirer.prompt([
@@ -32,7 +34,9 @@ export async function CrearContrato(base, cliente) {
     ]);
     const listaPlanes = await planesServicio.listarPlanes();
     if (listaPlanes.length === 0) {
-        console.log("No hay  planes para editar");
+        console.log("No hay  planes");
+        ;await sleep(1000);
+                        console.clear();
         return;
     }
     const { planSeleccionado } = await inquirer.prompt([
@@ -46,13 +50,17 @@ export async function CrearContrato(base, cliente) {
 
     const nuevoContrato = new Contrato(clienteSeleccionado, planSeleccionado);
     await contratoServicio.crearContrato(nuevoContrato, clienteSeleccionado, planSeleccionado);
-    console.log("Contrato creado exitosamente")
+    console.log("Contrato creado exitosamente");
+    ;await sleep(1000);
+                        console.clear();
 }
 
 export async function ListarContratos() {
     const contratos = await contratoServicio.listarContratos();
     if (contratos.length === 0) {
         console.log("No hay contratos");
+        ;await sleep(1000);
+                        console.clear();
         return;
     }
     console.log("================== Lista de Contratos =================");
@@ -68,6 +76,8 @@ export async function ListarContratos() {
     });
 
     console.log("=======================================================");
+    ;await sleep(1000);
+                        console.clear();
 }
 
 export async function FinalizarContrato() {
@@ -75,6 +85,8 @@ export async function FinalizarContrato() {
         const listaContratos = await contratoServicio.listarContratos();
         if (listaContratos.length === 0) {
             console.log("No hay contratos");
+            ;await sleep(1000);
+                        console.clear();
             return;
         }
         const { contratoSeleccionado } = await inquirer.prompt([
@@ -86,13 +98,19 @@ export async function FinalizarContrato() {
             }
         ]);
         if(contratoSeleccionado.fechaFinalizacion){
-            console.log("El contrato ya fue finalizado previamente")
+            console.log("El contrato ya fue finalizado previamente");
+            ;await sleep(1000);
+                        console.clear();
             return;
         }
         await contratoServicio.finalizar(contratoSeleccionado);
-        console.log("Contrato finalizado exitosamente")
+        console.log("Contrato finalizado exitosamente");
+        ;await sleep(1000);
+                        console.clear();
     } catch (error) {
-        console.log("Ocurrió un error", error.message)
+        console.log("Ocurrió un error", error.message);
+        ;await sleep(1000);
+                        console.clear();
     }
 
 }
