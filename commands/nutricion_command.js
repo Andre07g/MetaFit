@@ -27,7 +27,7 @@ export async function CrearPlan() {
                     const nombreDesayuno = await preguntar("Ingrese el nombre del desayuno");
                     if(nombreDesayuno.length===0){throw new Error("El nombre del desayuno no puede estar vacio");}
                     const caloriasDesayuno = await preguntarNum("Ingrese calorias del alimento")
-                    if(caloriasDesayuno.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
+                    if(isNaN(caloriasDesayuno) || caloriasDesayuno.length===0 || caloriasDesayuno<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoDesayuno = {nombre:nombreDesayuno,calorias:caloriasDesayuno};
                     desayuno.push(nuevoDesayuno);
                     console.log("Desayuno añadido exitosamente");
@@ -36,7 +36,7 @@ export async function CrearPlan() {
                     const nombreAlmuerzo = await preguntar("Ingrese el nombre del almuerzo");
                     if(nombreAlmuerzo.length===0){throw new Error("El nombre del almuerzo no puede estar vacio");}
                     const caloriasAlmuerzo = await preguntarNum("Ingrese calorias del alimento")
-                    if(caloriasAlmuerzo.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
+                    if(isNaN(caloriasAlmuerzo) || caloriasAlmuerzo.length===0 || caloriasAlmuerzo<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoAlmuerzo = {nombre:nombreAlmuerzo,calorias:caloriasAlmuerzo};
                     almuerzo.push(nuevoAlmuerzo);
                     console.log("Almuerzo añadido exitosamente");
@@ -45,12 +45,15 @@ export async function CrearPlan() {
                     const nombreCena =await preguntar("Ingrese el nombre del cena");
                     if(nombreCena.length===0){throw new Error("El nombre del cena no puede estar vacio");}
                     const caloriasCena = await preguntarNum("Ingrese calorias del alimento")
-                    if(caloriasCena.length===0){throw new Error("No puede dejar el campo de calorias vacio");}
+                    if(isNaN(caloriasCena) || caloriasCena.length===0 || caloriasCena<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoCena = {nombre:nombreCena,calorias:caloriasCena};
                     cena.push(nuevoCena);
                     console.log("Cena añadido exitosamente");
                     break;
                 case "Finalizado":
+                    if(desayuno.length<=0){console.log("Debes agregar al menos un desayuno");break;}
+                    if(almuerzo.length<=0){console.log("Debes agregar al menos un almuerzo");break;}
+                    if(cena.length<=0){console.log("Debes agregar al menos una cena");break;}
                     console.log("Volviendo al menu anterior");
                     cicloComidas=false;
                     break;
