@@ -2,7 +2,7 @@ import inquirer from "inquirer";
 import { ObjectId } from "mongodb";
 import ClientesService from "../services/clientes_service.js";
 import Cliente from "../models/Cliente.js";
-import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
+import {preguntar, preguntarNum, opciones,sleep } from '../utils/utilidades.js';
 
 
 let clienteServicio;
@@ -13,6 +13,7 @@ export function setBase(base) {
 
 export async function CrearCliente() {
     try {
+
         console.log("Creación de cliente")
         const nombre = await preguntar("Ingrese nombre completo:");
         if (nombre.length === 0) { throw new Error("El nombre no puede estar vacio"); };
@@ -24,8 +25,12 @@ export async function CrearCliente() {
         const clienteNuevo = new Cliente(nombre, documento, telefono,planes );
         await clienteServicio.agregarCliente(clienteNuevo);
         console.log("Cliente registrado correctamente");
+        await sleep(1000);
+                        console.clear();
     } catch (error) {
-        console.log("Error al crear cliente:", error.message)
+        console.log("Error al crear cliente:", error.message);
+        await sleep(1000);
+                        console.clear();
     }
 }
 
@@ -35,6 +40,7 @@ export async function EditarCliente() {
         const listaClientes = await clienteServicio.listarClientes();
         if (listaClientes.length === 0) {
             console.log("No hay clientes para editar");
+
             return;
         }
         const { clienteSeleccionado } = await inquirer.prompt([
@@ -48,14 +54,18 @@ export async function EditarCliente() {
         clienteSeleccionado.nombre = await preguntar("Ingrese nuevo nombre:");
         if (clienteSeleccionado.nombre.length === 0) { throw new Error("El nombre no puede estar vacio"); };
         clienteSeleccionado.documento = await preguntar("Ingrese el nuevo documento:");
-        if (clienteSeleccionado.documento.length === 0) { throw new Error("El documento debe tener 10 digitos"); };
+        if (clienteSeleccionado.documento.length != 10) { throw new Error("El documento debe tener 10 digitos"); };
         clienteSeleccionado.telefono = await preguntar("Ingrese el nuevo telefono:");
-        if (clienteSeleccionado.telefono.length === 0) { throw new Error("El telefono debe tener 10 digitos (+57XXXXXXXXXX)"); };
+        if (clienteSeleccionado.telefono.length != 10) { throw new Error("El telefono debe tener 10 digitos"); };
 
         await clienteServicio.editarCliente(clienteSeleccionado._id, clienteSeleccionado);
         console.log("Cliente actualizado correctamente");
+        await sleep(1000);
+                        console.clear();
     } catch (error) {
         console.log("Error al editar cliente:", error.message);
+        await sleep(1000);
+                        console.clear();
 
     }
 }
@@ -75,9 +85,11 @@ export async function ListarClientes() {
             console.log(`Telefono: ${c.telefono}`)
             console.log(`Planes: ${c.planes}`);
         });
-        console.log("===================================")
+        console.log("===================================");await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Ocurrió un error al mostrar clientes", error.message)
+        console.log("Ocurrió un error al mostrar clientes", error.message);await sleep(1000);
+                        console.clear();
     }
 }
 
@@ -91,10 +103,12 @@ export async function ListarClientePorDocumento() {
         console.log(`Documento: ${clienteEncontrado.documento}`);
         console.log(`Telefono: ${clienteEncontrado.telefono}`)
         console.log(`Planes: ${clienteEncontrado.planes}`)
-        console.log("===================================");
-
+        console.log("===================================")
+        ;await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Error al buscar cliente",error.message)
+        console.log("Error al buscar cliente",error.message);await sleep(1000);
+        console.clear();
     }
 }
 
@@ -115,8 +129,10 @@ export async function EliminarCliente() {
             }
         ]);
         await clienteServicio.eliminarCliente(clienteSeleccionadoEliminar);
-        console.log("Cliente eliminado correctamente");
+        console.log("Cliente eliminado correctamente");await sleep(1000);
+        console.clear();
     } catch (error) {
-        console.log("Error al eliminar cliente", error.message)
+        console.log("Error al eliminar cliente", error.message);await sleep(1000);
+        console.clear();
     }
 }
