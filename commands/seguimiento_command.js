@@ -49,7 +49,7 @@ export async function CrearSeguimiento(cliente) {
             console.log("Seguimiento creado exitosamente")
         })
     } catch (error) {
-        console.log("Error al crear seguimiento", error)
+        console.log("Error al crear seguimiento", error.message)
     } finally {
         await session.endSession();
     }
@@ -78,7 +78,7 @@ export async function EliminarSeguimiento(cliente) {
 
         });
     } catch (error) {
-        console.log("Error al eliminar seguimiento", error)
+        console.log("Error al eliminar seguimiento", error.message)
     } finally {
         await session.endSession();
     }
@@ -118,6 +118,6 @@ export async function ListarSeguimientos() {
     });
     console.log("===================================");
   } catch (error) {
-    console.log("Ocurrió un error al mostrar clientes", error);
+    console.log("Ocurrió un error al mostrar clientes", error.message);
   }
 }
