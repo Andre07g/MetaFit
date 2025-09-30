@@ -3,6 +3,7 @@ import { ObjectId } from "mongodb";
 import ClientesService from "../services/clientes_service.js";
 import Cliente from "../models/Cliente.js";
 import {preguntar, preguntarNum, opciones,sleep } from '../utils/utilidades.js';
+import chalk from "chalk";
 
 
 let clienteServicio;
@@ -24,11 +25,11 @@ export async function CrearCliente() {
         const planes = [];
         const clienteNuevo = new Cliente(nombre, documento, telefono,planes );
         await clienteServicio.agregarCliente(clienteNuevo);
-        console.log("Cliente registrado correctamente");
+        console.log(chalk.green("Cliente registrado correctamente"));
         await sleep(1000);
                         console.clear();
     } catch (error) {
-        console.log("Error al crear cliente:", error.message);
+        console.log(chalk.red("Error al crear cliente:", error.message));
         await sleep(1000);
                         console.clear();
     }
@@ -39,7 +40,7 @@ export async function EditarCliente() {
         console.log("Edición de cliente");
         const listaClientes = await clienteServicio.listarClientes();
         if (listaClientes.length === 0) {
-            console.log("No hay clientes para editar");
+            console.log(chalk.yellow("No hay clientes para editar"));
 
             return;
         }
@@ -59,11 +60,11 @@ export async function EditarCliente() {
         if (clienteSeleccionado.telefono.length != 10) { throw new Error("El telefono debe tener 10 digitos"); };
 
         await clienteServicio.editarCliente(clienteSeleccionado._id, clienteSeleccionado);
-        console.log("Cliente actualizado correctamente");
+        console.log(chalk.green("Cliente actualizado correctamente"));
         await sleep(1000);
                         console.clear();
     } catch (error) {
-        console.log("Error al editar cliente:", error.message);
+        console.log(chalk.red("Error al editar cliente:", error.message));
         await sleep(1000);
                         console.clear();
 
@@ -74,7 +75,7 @@ export async function ListarClientes() {
     try {
         const clientesLista = await clienteServicio.listarClientes();
         if (clientesLista.length === 0) {
-            console.log("No hay clientes para editar");
+            console.log(chalk.yellow("No hay clientes para editar"));
             return;
         }
         console.log("===================================")
@@ -85,10 +86,12 @@ export async function ListarClientes() {
             console.log(`Telefono: ${c.telefono}`)
             console.log(`Planes: ${c.planes}`);
         });
-        console.log("===================================");await sleep(1000);
+        console.log("===================================");
+        await preguntar("Presione cualquier tecla para volver")
+        ;await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Ocurrió un error al mostrar clientes", error.message);await sleep(1000);
+        console.log(chalk.red("Ocurrió un error al mostrar clientes", error.message));await sleep(1000);
                         console.clear();
     }
 }
@@ -103,11 +106,12 @@ export async function ListarClientePorDocumento() {
         console.log(`Documento: ${clienteEncontrado.documento}`);
         console.log(`Telefono: ${clienteEncontrado.telefono}`)
         console.log(`Planes: ${clienteEncontrado.planes}`)
-        console.log("===================================")
+        console.log("===================================");
+        await preguntar("Presione cualquier tecla para volver")
         ;await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Error al buscar cliente",error.message);await sleep(1000);
+        console.log(chalk.red("Error al buscar cliente",error.message));await sleep(1000);
         console.clear();
     }
 }
@@ -117,7 +121,7 @@ export async function EliminarCliente() {
         console.log("Eliminar");
         const listaClientesEliminar = await clienteServicio.listarClientes();
         if (listaClientesEliminar.length === 0) {
-            console.log("No hay clientes");
+            console.log(chalk.yellow("No hay clientes"));
             return;
         }
         const { clienteSeleccionadoEliminar } = await inquirer.prompt([
@@ -132,7 +136,7 @@ export async function EliminarCliente() {
         console.log("Cliente eliminado correctamente");await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Error al eliminar cliente", error.message);await sleep(1000);
+        console.log(chalk.red("Error al eliminar cliente", error.message));await sleep(1000);
         console.clear();
     }
 }

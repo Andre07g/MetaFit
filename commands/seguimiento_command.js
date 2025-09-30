@@ -2,8 +2,9 @@ import inquirer from "inquirer";
 import SeguimientoService from "../services/seguimiento_service.js";
 import Seguimiento from "../models/Seguimiento.js";
 import ClientesService from "../services/clientes_service.js";
-import { preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
+import { preguntar, preguntarNum, opciones,sleep} from '../utils/utilidades.js';
 import { ObjectId } from "mongodb";
+import chalk from "chalk";
 
 let clienteServicio;
 let seguimientoServicio;
@@ -44,13 +45,12 @@ export async function CrearSeguimiento(cliente) {
             const comentarios = await preguntar("Ingrese comentarios");
             if(comentarios.length<=0){throw new Error("El comentario no puede estar vacio");}
             const nuevoSeguimiento = new Seguimiento(new ObjectId(clienteSeleccionado._id), pesoActual, porcentajeDeGrasa, medidas, comentarios, new Date());
-            console.log(nuevoSeguimiento)
             await seguimientoServicio.crearSeguimiento(nuevoSeguimiento);
-            console.log("Seguimiento creado exitosamente");await sleep(1000);
+            console.log(chalk.green("Seguimiento creado exitosamente"));await sleep(1000);
             console.clear();
         })
     } catch (error) {
-        console.log("Error al crear seguimiento", error.message);await sleep(1000);
+        console.log(chalk.red("Error al crear seguimiento", error.message));await sleep(1000);
         console.clear();
     } finally {
         await session.endSession();
@@ -76,12 +76,12 @@ export async function EliminarSeguimiento(cliente) {
                 }
             ]);
             await seguimientoServicio.eliminarSeguimiento(seguimientoSeleccionado);
-            console.log("Seguimiento eliminado correctamente");await sleep(1000);
+            console.log(chalk.green("Seguimiento eliminado correctamente"));await sleep(1000);
             console.clear();
 
         });
     } catch (error) {
-        console.log("Error al eliminar seguimiento", error.message);await sleep(1000);
+        console.log(chalk.red("Error al eliminar seguimiento", error.message));await sleep(1000);
         console.clear();
     } finally {
         await session.endSession();
@@ -120,10 +120,10 @@ export async function ListarSeguimientos() {
       console.log(`-Pecho: ${c.medidas[3].valor}`);
       console.log(`Comentarios: ${c.comentarios}`);
     });
-    console.log("===================================");await sleep(1000);
+    console.log("===================================");await preguntar("Presione cualquier tecla para volver");await sleep(1000);
     console.clear();
   } catch (error) {
-    console.log("Ocurrió un error al mostrar clientes", error.message);await sleep(1000);
+    console.log(chalk.red("Ocurrió un error al mostrar clientes", error.message));await sleep(1000);
     console.clear();
   }
 }

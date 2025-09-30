@@ -3,7 +3,8 @@ import ContratoService from "../services/contratos_service.js";
 import ClientesService from "../services/clientes_service.js";
 import PlanesService from "../services/planes_service.js"
 import Contrato from "../models/Contrato.js";
-import { preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
+import { preguntar, preguntarNum, opciones,sleep} from '../utils/utilidades.js';
+import chalk from "chalk";
 
 let contratoServicio;
 let clienteServicio;
@@ -50,7 +51,7 @@ export async function CrearContrato(base, cliente) {
 
     const nuevoContrato = new Contrato(clienteSeleccionado, planSeleccionado);
     await contratoServicio.crearContrato(nuevoContrato, clienteSeleccionado, planSeleccionado);
-    console.log("Contrato creado exitosamente");
+    console.log(chalk.green("Contrato creado exitosamente"));
     ;await sleep(1000);
                         console.clear();
 }
@@ -75,7 +76,7 @@ export async function ListarContratos() {
         console.log("-------------------------------------------------------");
     });
 
-    console.log("=======================================================");
+    console.log("=======================================================");await preguntar("Presione cualquier tecla para volver")
     ;await sleep(1000);
                         console.clear();
 }
@@ -98,17 +99,17 @@ export async function FinalizarContrato() {
             }
         ]);
         if(contratoSeleccionado.fechaFinalizacion){
-            console.log("El contrato ya fue finalizado previamente");
+            console.log(chalk.yellow("El contrato ya fue finalizado previamente"));
             ;await sleep(1000);
                         console.clear();
             return;
         }
         await contratoServicio.finalizar(contratoSeleccionado);
-        console.log("Contrato finalizado exitosamente");
+        console.log(chalk.green("Contrato finalizado exitosamente"));
         ;await sleep(1000);
                         console.clear();
     } catch (error) {
-        console.log("Ocurrió un error", error.message);
+        console.log(chalk.red("Ocurrió un error", error.message));
         ;await sleep(1000);
                         console.clear();
     }

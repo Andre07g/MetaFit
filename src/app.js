@@ -1,9 +1,11 @@
-
+import dotenv from "dotenv";
+dotenv.config();
 import { conectar, obtenerBase, obtenerCliente, cerrarConexion } from './config/db_conection.js';
 import {menuPrincipal} from "../cli/menuPrincipal.js"; 
-const uri = "mongodb+srv://edgar:1852467@cluster0.nw7rq1m.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
+const uri = process.env.MONGO_URI;
+
 try {
-  await conectar(uri, "ignasio");
+  await conectar(uri, "MetaFit");
   const base = obtenerBase();
   const cliente = obtenerCliente();
   await menuPrincipal(base,cliente);

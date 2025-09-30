@@ -24,6 +24,10 @@ export default class GestionService{
     async listaPorCliente(id){
         return await this.repositorio.listarPorCliente(id)
     }
+
+    async ConsultarBalance(){
+        return await this.repositorio.calcularBalance();
+    }
 }
 
 //crear ingreso y egreso

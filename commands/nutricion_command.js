@@ -3,7 +3,8 @@ import { ObjectId } from "mongodb";
 import NutricionService from "../services/nutricion_service.js";
 import ClientesService from "../services/clientes_service.js";
 import Nutricion from "../models/Nutricion.js";
-import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
+import {preguntar, preguntarNum, opciones,sleep } from '../utils/utilidades.js';
+import chalk from "chalk";
 
 let nutricionService;
 let clientesService;
@@ -30,7 +31,7 @@ export async function CrearPlan() {
                     if(isNaN(caloriasDesayuno) || caloriasDesayuno.length===0 || caloriasDesayuno<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoDesayuno = {nombre:nombreDesayuno,calorias:caloriasDesayuno};
                     desayuno.push(nuevoDesayuno);
-                    console.log("Desayuno añadido exitosamente");
+                    console.log(chalk.green("Desayuno añadido exitosamente"));
                     ;await sleep(1000);
                         console.clear();
                     break;
@@ -41,7 +42,7 @@ export async function CrearPlan() {
                     if(isNaN(caloriasAlmuerzo) || caloriasAlmuerzo.length===0 || caloriasAlmuerzo<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoAlmuerzo = {nombre:nombreAlmuerzo,calorias:caloriasAlmuerzo};
                     almuerzo.push(nuevoAlmuerzo);
-                    console.log("Almuerzo añadido exitosamente");;await sleep(1000);
+                    console.log(chalk.green("Almuerzo añadido exitosamente"));;await sleep(1000);
                     console.clear();
                     break;
                 case "Añadir cena":
@@ -51,15 +52,15 @@ export async function CrearPlan() {
                     if(isNaN(caloriasCena) || caloriasCena.length===0 || caloriasCena<=0){throw new Error("Las calorias deben ser un numero mayor a 0");}
                     const nuevoCena = {nombre:nombreCena,calorias:caloriasCena};
                     cena.push(nuevoCena);
-                    console.log("Cena añadido exitosamente");;await sleep(1000);
+                    console.log(chalk.green("Cena añadido exitosamente"));;await sleep(1000);
                     console.clear();
                     break;
                 case "Finalizado":
-                    if(desayuno.length<=0){console.log("Debes agregar al menos un desayuno");break;;await sleep(1000);
+                    if(desayuno.length<=0){console.log(chalk.yellow("Debes agregar al menos un desayuno"));break;;await sleep(1000);
                         console.clear();}
-                    if(almuerzo.length<=0){console.log("Debes agregar al menos un almuerzo");break;;await sleep(1000);
+                    if(almuerzo.length<=0){console.log(chalk.yellow("Debes agregar al menos un almuerzo"));break;;await sleep(1000);
                         console.clear();}
-                    if(cena.length<=0){console.log("Debes agregar al menos una cena");break;;await sleep(1000);
+                    if(cena.length<=0){console.log(chalk.yellow("Debes agregar al menos una cena"));break;;await sleep(1000);
                         console.clear();}
                     console.log("Volviendo al menu anterior");;await sleep(1000);
                     console.clear();
@@ -82,10 +83,10 @@ export async function CrearPlan() {
         ]);
         const nuevoPlanNutricional = new Nutricion(nombre,desayuno,almuerzo,cena,new ObjectId(clienteSeleccionado._id));
         await nutricionService.crearPlanNutricional(nuevoPlanNutricional);
-        console.log("Plan registrado correctamente");;await sleep(1000);
+        console.log(chalk.green("Plan registrado correctamente"));await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Error al crear plan:", error.message);await sleep(1000);
+        console.log(chalk.red("Error al crear plan:", error.message));await sleep(1000);
         console.clear();
     }
 }
@@ -106,10 +107,10 @@ export async function  ListarPlanes() {
             p.almuerzo.forEach(pa=>{console.log(`Almuerzos: ${pa.nombre}`);})
             p.cena.forEach(pc=>{console.log(`Cenas: ${pc.nombre}`);})
         });
-        console.log("===================================");await sleep(1000);
+        console.log("===================================");await preguntar("Presione cualquier tecla para volver");await sleep(1000);
         console.clear();
     } catch (error) {
-       console.log("Ocurrió un error al mostrar planes",error.message) ;await sleep(1000);
+       console.log(chalk.red("Ocurrió un error al mostrar planes",error.message)) ;await sleep(1000);
        console.clear();
     }
 }
@@ -131,10 +132,10 @@ export async function Eliminarplan(){
             }
         ]);
         await nutricionService.eliminarPlanNutricional(planSeleccionadoEliminar);
-        console.log("Plan eliminado correctamente");;await sleep(1000);
+        console.log(chalk.green("Plan eliminado correctamente"));await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Error al eliminar plan",error.message);await sleep(1000);
+        console.log(chalk.red("Error al eliminar plan",error.message));await sleep(1000);
         console.clear();
     }
 }

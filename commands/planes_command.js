@@ -2,7 +2,8 @@ import inquirer from "inquirer";
 import { ObjectId } from "mongodb";
 import PlanesService from "../services/planes_service.js";
 import Planes from "../models/Planes.js";
-import {preguntar, preguntarNum, opciones } from '../utils/utilidades.js';
+import {preguntar, preguntarNum, opciones,sleep } from '../utils/utilidades.js';
+import chalk from "chalk";
 
 
 let planesServicio;
@@ -24,10 +25,10 @@ export async function CrearPlan() {
         if (isNaN(precio) || precio<=0) { throw new Error("El precio debe ser un numero no menor de 0"); };
         const planNuevo = new Planes(nombre, duracion, metaFisica, nivel, precio);
         await planesServicio.crearPlan(planNuevo);
-        console.log("Plan registrado correctamente");;await sleep(1000);
+        console.log(chalk.green("Plan registrado correctamente"));await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Error al crear plan:", error.message);await sleep(1000);
+        console.log(chalk.red("Error al crear plan:", error.message));await sleep(1000);
         console.clear();
     }
 }
@@ -52,10 +53,10 @@ export async function EditarPlan() {
         if (isNaN(planSeleccionado.precio)) { throw new Error("El precio debe ser un numero"); };
 
         await planesServicio.editarPlan(planSeleccionado._id,planSeleccionado);
-        console.log("Plan actualizado correctamente");await sleep(1000);
+        console.log(chalk.green("Plan actualizado correctamente"));await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Error al editar plan:", error.message);;await sleep(1000);
+        console.log(chalk.red("Error al editar plan:", error.message));await sleep(1000);
         console.clear();
 
     }
@@ -76,10 +77,10 @@ export async function ListarPlanes() {
             console.log(`Meta: ${p.metaFisica}`)
             console.log(`Precio: ${p.precio}`);
         });
-        console.log("===================================");await sleep(1000);
+        console.log("===================================");await preguntar("Presione cualquier tecla para volver");await sleep(1000);
         console.clear();
     } catch (error) {
-       console.log("Ocurrió un error al mostrar planes",error.message) ;await sleep(1000);
+       console.log(chalk.red("Ocurrió un error al mostrar planes",error.message)) ;await sleep(1000);
        console.clear();
     }
 }
@@ -101,10 +102,10 @@ export async function Eliminarplan(){
             }
         ]);
         await planesServicio.eliminarPlan(planSeleccionadoEliminar);
-        console.log("Plan eliminado correctamente");;await sleep(1000);
+        console.log(chalk.green("Plan eliminado correctamente"));await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log("Error al eliminar plan",error.message);await sleep(1000);
+        console.log(chalk.red("Error al eliminar plan",error.message));await sleep(1000);
         console.clear();
     }
 }

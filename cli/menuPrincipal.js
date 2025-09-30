@@ -4,8 +4,9 @@ import * as NutricionCommand from '../commands/nutricion_command.js';
 import * as PlanesCommand from '../commands/planes_command.js';
 import * as GestionCommand from '../commands/gestion_command.js';
 import * as SeguimientoCommand from '../commands/seguimiento_command.js';
-import { preguntar, preguntarNum, opciones, sleep } from '../utils/utilidades.js';
+import { preguntar, preguntarNum, opciones, sleep, mostrarInicio } from '../utils/utilidades.js';
 import { MongoClient } from 'mongodb'
+import chalk from 'chalk';
 
 export async function menuPrincipal(base, cliente) {
     let salirMain = false;
@@ -15,7 +16,8 @@ export async function menuPrincipal(base, cliente) {
     ContratosCommand.setbase(base, cliente);
     SeguimientoCommand.setBase(base, cliente);
     NutricionCommand.setBase(base);
-    console.log('Bienvenido');
+    console.clear();
+    await mostrarInicio();
     while (salirMain == false) {
 
         await sleep(1000);
@@ -36,7 +38,7 @@ export async function menuPrincipal(base, cliente) {
             case "Seguimiento":
                 await sleep(1000);
                 console.clear();
-                await subMenuSeguimiento();
+                await subMenuSeguimiento(cliente);
                 break
             case "Nutricion":
                 await sleep(1000);
@@ -46,7 +48,7 @@ export async function menuPrincipal(base, cliente) {
             case "Contratos":
                 await sleep(1000);
                 console.clear();
-                await subMenuContratos();
+                await subMenuContratos(base,cliente);
                 break
             case "Gestión Financiera":
                 await sleep(1000);
@@ -131,7 +133,7 @@ async function subMenuPlanes() {
 //                      SEGUIMIENTO
 //===================================================
 
-async function subMenuSeguimiento() {
+async function subMenuSeguimiento(cliente) {
     let exitSeguimiento = false;
     while (!exitSeguimiento) {
         const opcionSeguimiento = await opciones("Registrar avance", "Eliminar Avance", "Ver avance de un cliente", "Regresar al menú anterior")
@@ -158,7 +160,7 @@ async function subMenuSeguimiento() {
 //                      CONTRATOS
 //===================================================
 
-async function subMenuContratos() {
+async function subMenuContratos(base,cliente) {
     let exitContratos = false;
     while (!exitContratos) {
         const opcionContratos = await opciones("Crear contrato", "Finalizar contrato", "Ver contratos", "Regresar al menú anterior")
@@ -187,9 +189,7 @@ async function subMenuContratos() {
 async function subMenuGestion(cliente) {
     let exitGestion = false;
     while (!exitGestion) {
-        const opcionGestion
-            = await opciones("Crear Movimiento", "Consultar Historial de Movimientos", "Balance por clientes", "Balance general", "Volver al menu anterior")
-
+        const opcionGestion = await opciones("Crear Movimiento", "Consultar Historial de Movimientos", "Movimientos por clientes", "Balance general", "Volver al menu anterior")
         switch (opcionGestion) {
             case "Crear Movimiento":
                 await GestionCommand.CrearMovimiento(cliente);
@@ -197,11 +197,11 @@ async function subMenuGestion(cliente) {
             case "Consultar Historial de Movimientos":
                 await GestionCommand.ListarPorTipo()
                 break;
-            case "Balance por clientes":
+            case "Movimientos por clientes":
                 await GestionCommand.ListarPorCliente()
                 break;
             case "Balance general":
-                console.log("balance general")
+                await GestionCommand.ConsultaDeBalance();
                 break;
             case "Volver al menu anterior":
                 exitGestion = true;
@@ -226,7 +226,7 @@ async function subMenuNutricion() {
                 await NutricionCommand.ListarPlanes();
                 break;
             case "Volver al menu anterior":
-                exitGestion = true;
+                exitNutricion = true;
                 break;
         }
     }

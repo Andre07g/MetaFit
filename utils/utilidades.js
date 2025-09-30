@@ -1,4 +1,5 @@
     import inquirer from 'inquirer';
+    import chalk from 'chalk';
 
     export function sleep(ms) {
         return new Promise((resolve) => setTimeout(resolve, ms));
@@ -41,3 +42,19 @@
         ]);
         return respuesta.opcion;
     }
+
+export    async function mostrarInicio() {
+  const ascii = `
+███╗   ███╗███████╗████████╗ █████╗ ███████╗██╗████████╗
+████╗ ████║██╔════╝╚══██╔══╝██╔══██╗██╔════╝██║╚══██╔══╝
+██╔████╔██║█████╗     ██║   ███████║█████╗  ██║   ██║   
+██║╚██╔╝██║██╔══╝     ██║   ██╔══██║██╔══╝  ██║   ██║   
+██║ ╚═╝ ██║███████╗   ██║   ██║  ██║██║     ██║   ██║   
+╚═╝     ╚═╝╚══════╝   ╚═╝   ╚═╝  ╚═╝╚═╝     ╚═╝   ╚═╝   
+                                                        
+  `;
+
+  console.log(chalk.yellow(ascii));
+  await sleep(2500);
+  console.clear();           
+}
