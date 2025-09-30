@@ -1,10 +1,12 @@
 {
   "name": "ignasio-jean",
-  "type":"module",
+  "type": "module",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Aplicación CLI para gestión de clientes, planes y seguimiento en MongoDB",
+  "main": "src/app.js",
   "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon src/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -12,7 +14,7 @@
     "url": "git+https://github.com/Andre07g/IGNASIO-JEAN.git"
   },
   "keywords": [],
-  "author": "",
+  "author": "Edgar Andrés Leal Plata",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/Andre07g/IGNASIO-JEAN/issues"
@@ -24,5 +26,8 @@
     "inquirer": "^12.9.6",
     "mongodb": "^6.20.0",
     "table": "^6.9.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
   }
 }
