@@ -28,6 +28,14 @@ export default class GestionService{
     async ConsultarBalance(){
         return await this.repositorio.calcularBalance();
     }
+
+    async ConsultarBalanceMes(mes){
+        return await this.repositorio.calcularBalanceMes(mes);
+    }
+
+    async ConsultarBalanceAnio(anio){
+        return await this.repositorio.calcularBalanceAnio(anio);
+    }
 }
 
 //crear ingreso y egreso

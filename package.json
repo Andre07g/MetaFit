@@ -24,6 +24,7 @@
     "chalk": "^5.6.2",
     "cli-table3": "^0.6.5",
     "dotenv": "^17.2.2",
+    "fs": "^0.0.1-security",
     "inquirer": "^12.9.6",
     "mongodb": "^6.20.0",
     "table": "^6.9.0"

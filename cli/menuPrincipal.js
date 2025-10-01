@@ -189,7 +189,7 @@ async function subMenuContratos(base,cliente) {
 async function subMenuGestion(cliente) {
     let exitGestion = false;
     while (!exitGestion) {
-        const opcionGestion = await opciones("Crear Movimiento", "Consultar Historial de Movimientos", "Movimientos por clientes", "Balance general", "Volver al menu anterior")
+        const opcionGestion = await opciones("Crear Movimiento", "Consultar Historial de Movimientos", "Movimientos por clientes", "Balance general", "Balance por Mes", "Balance por año", "Volver al menu anterior")
         switch (opcionGestion) {
             case "Crear Movimiento":
                 await GestionCommand.CrearMovimiento(cliente);
@@ -203,6 +203,12 @@ async function subMenuGestion(cliente) {
             case "Balance general":
                 await GestionCommand.ConsultaDeBalance();
                 break;
+            case "Balance por Mes":
+                await GestionCommand.ConsultaDeBalanceMes();
+                break; 
+            case "Balance por año":
+                await GestionCommand.ConsultaDeBalanceAnio();
+                break;   
             case "Volver al menu anterior":
                 exitGestion = true;
                 break;

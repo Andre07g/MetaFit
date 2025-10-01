@@ -7,6 +7,7 @@ import MovimientoFinanciero from "../models/Gestion_financiera.js"
 import { ListarClientePorDocumento } from "./clientes_command.js";
 import { preguntar, preguntarNum, opciones, sleep } from "../utils/utilidades.js";
 import chalk from "chalk";
+import fs from "fs"
 
 
 
@@ -101,37 +102,37 @@ export async function ListarPorTipo() {
             movimientosPorTipo.forEach(m => {
                 console.log("---------------------------------")
                 console.log(`${new Date(m.fecha).toLocaleString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-    })}`);
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })}`);
                 console.log(`${m.clienteNombre}`);
                 console.log(`${m.planNombre}`);
                 console.log(`${m.pago}`);
                 console.log("---------------------------------")
-            });await preguntar("Presiona cualquier tecla para volver")
-            ; await sleep(1000);
+            }); await preguntar("Presiona cualquier tecla para volver")
+                ; await sleep(1000);
             console.clear();
         }
         else {
             movimientosPorTipo.forEach(m => {
                 console.log("---------------------------------")
                 console.log(`${new Date(m.fecha).toLocaleString("es-ES", {
-        day: "2-digit",
-        month: "2-digit",
-        year: "numeric",
-        hour: "2-digit",
-        minute: "2-digit"
-    })}`);
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit"
+                })}`);
                 console.log(`${m.concepto}`);
                 console.log(`${m.descripcion}`);
                 console.log(`${m.pago}`);
                 console.log("---------------------------------")
             });
             await preguntar("Presiona cualquier tecla para volver")
-            ; await sleep(1000);
+                ; await sleep(1000);
             console.clear();
         }
     } catch (error) {
@@ -190,9 +191,66 @@ export async function ConsultaDeBalance() {
         await sleep(1000);
         console.clear();
     } catch (error) {
-        console.log(chalk(error.message));   await sleep(1000);
+        console.log(chalk(error.message)); await sleep(1000);
         console.clear();
     }
-    
 
+
+}
+
+export async function ConsultaDeBalanceMes() {
+    try {
+        const mes = await preguntarNum("Ingrese el numero del mes (1-12)");
+        const balanceMes = await gestionServicio.ConsultarBalanceMes(mes);
+        console.log("============== Balance ==============");
+        console.log(chalk.green(`Ingresos: ${balanceMes.ingresos}`));
+        console.log(chalk.red(`Egresos: ${balanceMes.egresos}`));
+        console.log(chalk.yellow(`Balance: ${balanceMes.balance}`))
+        await preguntar("Presione cualquier boton para volver");
+        await sleep(1000);
+        console.clear();
+        console.log("Desea guardar los resultados en JSON?");
+        const descargar = await opciones("SI", "NO");
+        if (descargar == "SI") {
+            let historial = [];
+            if (fs.existsSync("../historicos/historial_balance.json")) { 
+                historial = JSON.parse(fs.readFileSync("../historicos/historial_balance.json", "utf-8")) }
+                const historico = {
+                    fechaCreacion: new Date(),
+                    mesBuscado:mes,
+                    Ingresos: balanceMes.ingresos,
+                    Egresos: balanceMes.egresos,
+                    Balance: balanceMes.balance
+                }
+                historial.push(historico)
+                await fs.writeFile("../historicos/historial_balance.json",JSON.stringify(historial,null,4))
+                console.log("Se guardo correctamente")
+                
+
+
+
+        } 
+        
+        else { console.log("No descargar") }
+    } catch (error) {
+        console.log(chalk(error)); await sleep(1000);
+        console.clear();
+    }
+}
+
+export async function ConsultaDeBalanceAnio() {
+    try {
+        const anio = await preguntarNum("Ingrese el numero del Año");
+        const balanceAnio = await gestionServicio.ConsultarBalanceAnio(anio);
+        console.log("============== Balance ==============");
+        console.log(chalk.green(`Ingresos: ${balanceAnio.ingresos}`));
+        console.log(chalk.red(`Egresos: ${balanceAnio.egresos}`));
+        console.log(chalk.yellow(`Balance: ${balanceAnio.balance}`))
+        await preguntar("Presione cualquier boton para volver");
+        await sleep(1000);
+        console.clear();
+    } catch (error) {
+        console.log(chalk(error)); await sleep(1000);
+        console.clear();
+    }
 }
