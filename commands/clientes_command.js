@@ -110,6 +110,44 @@ export async function ListarClientePorDocumento() {
         await preguntar("Presione cualquier tecla para volver")
         ;await sleep(1000);
         console.clear();
+  
+    } catch (error) {
+        console.log(chalk.red("Error al buscar cliente",error.message));await sleep(1000);
+        console.clear();
+    }
+}
+
+export async function HistoricoCliente(){
+    try {
+        const documento = await preguntar("Ingrese el documento del cliente");
+        const clienteHistorico = await clienteServicio.listarPorDocumento(documento);
+        if (!clienteHistorico){
+            throw new Error("El cliente no fue encontrado");
+        }
+        console.log(chalk.yellow("================= HISTORICO CLIENTE ================="));
+        console.log(`Nombre: ${clienteHistorico.nombre}`);
+        console.log(`Documento: ${clienteHistorico.documento}`);
+        console.log(chalk.yellow("====================================================="));
+        await preguntar("Presione cualquier tecla para volver");
+        await sleep(1000);
+        console.clear();
+        console.log("Desea guardar el historico del cliente en un JSON?");
+        const descargar = await opciones ("SI", "NO");
+        if (descargar == "SI"){
+            let historial = [];
+            if(fs.exystsSync("../exports/cliente_progreso.json")){
+                historial = JSON.parse(fs.readFileSync("../exports/cliente_progreso.json", "utf-8"))
+            }
+            const historico = {
+                fechaCreacion: new Date (),
+                nombreCliente: clienteHistorico.nombre,
+                documentoCliente: clienteHistorico.documento,
+                telefonoCliente: clienteHistorico.telefono,
+                planes: planes
+            }
+            historial.push(historico)
+            await fs.writeFile("../exports/cliente_progreso.json", JSON.stringify(historial, null, 4))
+        }   console.log(chalk.green("Se guardó el historico del cliente correctamente"))
     } catch (error) {
         console.log(chalk.red("Error al buscar cliente",error.message));await sleep(1000);
         console.clear();

@@ -74,7 +74,7 @@ export async function menuPrincipal(base, cliente) {
 async function subMenuClientes() {
     let exitCliente = false;
     while (!exitCliente) {
-        const opcionCliente = await opciones("Crear cliente", "Editar cliente", "Eliminar cliente", "Buscar cliente", "Listar clientes", "Regresar al menú anterior")
+        const opcionCliente = await opciones("Crear cliente", "Editar cliente", "Eliminar cliente", "Buscar cliente", "Listar clientes", "Historico cliente", "Regresar al menú anterior")
 
         switch (opcionCliente) {
             case "Crear cliente":
@@ -91,6 +91,9 @@ async function subMenuClientes() {
                 break;
             case "Listar clientes":
                 await ClientesCommand.ListarClientes();
+                break;
+            case "Historico clientes":
+                await ClientesCommand.HistoricoCliente();
                 break;
             case "Regresar al menú anterior":
                 exitCliente = true;
