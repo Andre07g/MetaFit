@@ -16,6 +16,8 @@ export default class SeguimientoRepositorio{
     async eliminar(seguimiento){
         return await this.coleccion.deleteOne({_id:new ObjectId(seguimiento._id)});
     }
-
+    async listarPorCliente(id){
+        return await this.coleccion.find({clienteId:new Object(id)}).toArray();
+    }
 }
 

@@ -5,6 +5,7 @@ import ClientesService from "../services/clientes_service.js";
 import { preguntar, preguntarNum, opciones,sleep} from '../utils/utilidades.js';
 import { ObjectId } from "mongodb";
 import chalk from "chalk";
+import fs from "fs/promises";
 
 let clienteServicio;
 let seguimientoServicio;
@@ -126,4 +127,31 @@ export async function ListarSeguimientos() {
     console.log(chalk.red("Ocurrió un error al mostrar clientes", error.message));await sleep(1000);
     console.clear();
   }
+}
+
+
+export async function CrearJSONCliente(cliente) {
+    try {
+        
+        const listaClientes = await clienteServicio.listarClientes();
+            const { clienteSeleccionado } = await inquirer.prompt([
+                {
+                    type: "list",
+                    name: "clienteSeleccionado",
+                    message: "Seleccione el cliente:",
+                    choices: listaClientes.map(c => ({ name: `${c.nombre} (Documento: ${c.documento})`, value: c }))
+                }
+            ]);
+            const listaSeguimientos=await seguimientoServicio.listarPorId(clienteSeleccionado._id);  
+            const rutaGuardado = "../exports/cliente.json";
+            const datoCliente = await fs.readFile(rutaGuardado,"utf-8");
+            console.log(datoCliente)
+            let cliente = JSON.parse(datoCliente)
+            cliente = listaSeguimientos
+            await fs.writeFile("../exports/cliente.json",JSON.stringify(cliente,null,4));
+
+    } catch (error) {
+        console.log(error)
+        await sleep(30000)
+    }
 }

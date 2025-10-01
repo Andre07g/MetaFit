@@ -19,5 +19,7 @@ export default class SeguimientoService{
     async eliminarSeguimiento(registroObj){
         return await this.repositorio.eliminar(registroObj)
     }
-
+    async listarPorId(id){
+        return await this.repositorio.listarPorCliente(id);
+    }
 }

@@ -4,7 +4,7 @@ import { conectar, obtenerBase, obtenerCliente, cerrarConexion } from './config/
 import {menuPrincipal} from "../cli/menuPrincipal.js";
 import {sleep,preguntar } from "../utils/utilidades.js" 
 import chalk from "chalk";
-const uri = process.env.MONGO_URI;
+const uri = "mongodb://localhost:27017";
 const claveAdmin = process.env.CLAVE;
 try {
   await conectar(uri, "MetaFit");

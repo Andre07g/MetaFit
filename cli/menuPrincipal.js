@@ -136,7 +136,7 @@ async function subMenuPlanes() {
 async function subMenuSeguimiento(cliente) {
     let exitSeguimiento = false;
     while (!exitSeguimiento) {
-        const opcionSeguimiento = await opciones("Registrar avance", "Eliminar Avance", "Ver avance de un cliente", "Regresar al menú anterior")
+        const opcionSeguimiento = await opciones("Registrar avance", "Eliminar Avance", "Ver avance de un cliente", "Crear archivo","Regresar al menú anterior")
 
         switch (opcionSeguimiento) {
             case "Registrar avance":
@@ -148,6 +148,8 @@ async function subMenuSeguimiento(cliente) {
             case "Ver avance de un cliente":
                 await SeguimientoCommand.ListarSeguimientos(cliente)
                 break;
+            case "Crear archivo":
+                await SeguimientoCommand.CrearJSONCliente(cliente)
             case "Regresar al menú anterior":
                 exitSeguimiento = true;
                 break;
